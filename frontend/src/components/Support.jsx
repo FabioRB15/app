@@ -143,7 +143,7 @@ const Support = () => {
                 <div className="text-sm text-gray-600">Satisfação do Cliente</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-indigo-600 mb-2">< 5min</div>
+                <div className="text-3xl font-bold text-indigo-600 mb-2">&lt; 5min</div>
                 <div className="text-sm text-gray-600">Tempo de Resposta</div>
               </div>
               <div className="text-center">
