@@ -1,11 +1,74 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { mockPricingPlans } from '../data/mock';
+import { apiService } from '../services/api';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 import { Check, Star } from 'lucide-react';
 
 const Pricing = () => {
+  const [pricingPlans, setPricingPlans] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchPricingPlans = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      const plans = await apiService.getPricingPlans();
+      setPricingPlans(plans);
+    } catch (err) {
+      console.error('Error fetching pricing plans:', err);
+      setError('Não foi possível carregar os planos de preços. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPricingPlans();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Planos que se Adaptam à
+              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent"> Sua Magia</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Escolha o plano perfeito para sua comunidade e desbloqueie todo o potencial dos seus jogos
+            </p>
+          </div>
+          <LoadingSpinner size="large" className="py-20" />
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Planos que se Adaptam à
+              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent"> Sua Magia</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Escolha o plano perfeito para sua comunidade e desbloqueie todo o potencial dos seus jogos
+            </p>
+          </div>
+          <ErrorMessage message={error} onRetry={fetchPricingPlans} />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="pricing" className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
@@ -22,7 +85,7 @@ const Pricing = () => {
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-          {mockPricingPlans.map((plan) => (
+          {pricingPlans.map((plan) => (
             <Card 
               key={plan.id} 
               className={`relative bg-white border-2 transition-all hover:shadow-lg ${

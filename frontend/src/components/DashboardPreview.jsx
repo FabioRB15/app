@@ -1,11 +1,81 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
-import { mockDashboardStats, mockGameServers } from '../data/mock';
+import { apiService } from '../services/api';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 import { TrendingUp, TrendingDown, Play, Settings, Users, HardDrive } from 'lucide-react';
 
 const DashboardPreview = () => {
+  const [dashboardStats, setDashboardStats] = useState([]);
+  const [gameServers, setGameServers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchDashboardData = async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      
+      // Fetch both stats and servers in parallel
+      const [stats, servers] = await Promise.all([
+        apiService.getDashboardStats(),
+        apiService.getServers()
+      ]);
+      
+      setDashboardStats(stats);
+      setGameServers(servers);
+    } catch (err) {
+      console.error('Error fetching dashboard data:', err);
+      setError('Não foi possível carregar os dados do dashboard. Verifique sua conexão.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section id="dashboard" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Controle Total em Suas
+              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent"> Mãos</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Dashboard intuitivo com métricas em tempo real, gerenciamento simplificado e insights poderosos
+            </p>
+          </div>
+          <LoadingSpinner size="large" className="py-20" />
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section id="dashboard" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Controle Total em Suas
+              <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent"> Mãos</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Dashboard intuitivo com métricas em tempo real, gerenciamento simplificado e insights poderosos
+            </p>
+          </div>
+          <ErrorMessage message={error} onRetry={fetchDashboardData} />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="dashboard" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
@@ -22,7 +92,7 @@ const DashboardPreview = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {mockDashboardStats.map((stat, index) => (
+          {dashboardStats.map((stat, index) => (
             <Card key={index} className="bg-white border-gray-200 hover:shadow-md transition-shadow">
               <CardHeader className="pb-3">
                 <CardDescription className="text-sm font-medium text-gray-600">
@@ -63,7 +133,7 @@ const DashboardPreview = () => {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              {mockGameServers.map((server) => (
+              {gameServers.slice(0, 4).map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div className="flex items-center space-x-4">
                     <img 
