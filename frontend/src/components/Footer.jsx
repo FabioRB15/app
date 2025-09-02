@@ -22,7 +22,7 @@ const Footer = () => {
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
-                <Discord className="w-5 h-5" />
+                <MessageCircle className="w-5 h-5" />
               </a>
               <a href="#" className="text-gray-400 hover:text-purple-400 transition-colors">
                 <Twitter className="w-5 h-5" />
