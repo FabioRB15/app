@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, Github, Twitter, Discord, Mail } from 'lucide-react';
+import { Zap, Github, Twitter, MessageCircle, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
