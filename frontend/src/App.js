@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Toaster } from "./components/ui/toaster";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import DashboardPreview from "./components/DashboardPreview";
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
         </Routes>
+        <Toaster />
       </BrowserRouter>
     </div>
   );
