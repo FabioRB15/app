@@ -167,7 +167,7 @@ const Support = () => {
             </CardContent>
           </Card>
 
-          <Card className="bg-white border-gray-200 hover:shadow-md transition-shadow text-center">
+          <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:shadow-md transition-all text-center">
             <CardHeader>
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mx-auto mb-4">
                 <Phone className="w-6 h-6 text-green-600" />
