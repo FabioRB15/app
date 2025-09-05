@@ -1,17 +1,25 @@
 import React from 'react';
-import { Zap, Github, Twitter, MessageCircle, Mail } from 'lucide-react';
+import { Github, Twitter, MessageCircle, Mail } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-900 dark:bg-gray-950 text-white py-16 px-4 sm:px-6 lg:px-8 transition-colors">
-      <div className="max-w-7xl mx-auto">
+    <footer className="bg-gray-900 dark:bg-gray-950 text-white py-16 px-4 sm:px-6 lg:px-8 transition-colors relative overflow-hidden">
+      {/* Mystical background elements */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-20 w-24 h-24 bg-purple-500/20 rounded-full blur-xl animate-pulse"></div>
+        <div className="absolute bottom-20 right-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-xl animate-pulse delay-1000"></div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Logo and Description */}
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-                <Zap className="w-5 h-5 text-white" />
-              </div>
+            <div className="flex items-center space-x-3 mb-4">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
+                alt="Mystic Host Symbol" 
+                className="w-8 h-8 opacity-90"
+              />
               <span className="text-xl font-bold bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text text-transparent">
                 Mystic Host
               </span>
@@ -21,16 +29,16 @@ const Footer = () => {
               Performance excepcional, suporte dedicado e tecnologia de ponta.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
+              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-all hover:scale-110">
                 <MessageCircle className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
+              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-all hover:scale-110">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
+              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-all hover:scale-110">
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-colors">
+              <a href="#" className="text-gray-400 dark:text-gray-500 hover:text-purple-400 dark:hover:text-purple-300 transition-all hover:scale-110">
                 <Mail className="w-5 h-5" />
               </a>
             </div>

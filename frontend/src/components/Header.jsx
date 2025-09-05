@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import { Button } from './ui/button';
-import { Menu, X, Zap, Shield, Settings } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 w-full bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 z-50 transition-colors">
+    <header className="fixed top-0 w-full bg-white/95 dark:bg-gray-900/95 backdrop-blur-md border-b border-gray-200/50 dark:border-gray-700/50 z-50 transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <Zap className="w-5 h-5 text-white" />
+          {/* Logo with Mystic Symbol */}
+          <div className="flex items-center space-x-3">
+            <div className="relative">
+              <img 
+                src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
+                alt="Mystic Host Symbol" 
+                className="w-8 h-8 opacity-90 hover:opacity-100 transition-opacity"
+              />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Mystic Host
@@ -42,7 +46,7 @@ const Header = () => {
             <Button variant="ghost" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400">
               Entrar
             </Button>
-            <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all">
+            <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg shadow-purple-500/25">
               Começar Grátis
             </Button>
           </div>
@@ -80,7 +84,7 @@ const Header = () => {
                 <Button variant="ghost" className="justify-start text-gray-700 dark:text-gray-300">
                   Entrar
                 </Button>
-                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 justify-start">
+                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 justify-start shadow-lg shadow-purple-500/25">
                   Começar Grátis
                 </Button>
               </div>
