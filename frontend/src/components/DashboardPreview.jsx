@@ -78,7 +78,8 @@ const DashboardPreview = () => {
   }
 
   return (
-    <section id="dashboard" className="py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors">
+    <section id="dashboard" className="relative py-20 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900 transition-colors overflow-hidden">
+      <MysticBackground className="opacity-40 dark:opacity-60" />
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
