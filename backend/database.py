@@ -30,7 +30,7 @@ class Database:
                     "ram": "2GB",
                     "storage": "10GB SSD",
                     "status": "online",
-                    "image": "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+                    "image": "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=400&h=300&fit=crop",
                     "created_at": datetime.utcnow(),
                     "updated_at": datetime.utcnow()
                 },
@@ -41,7 +41,7 @@ class Database:
                     "ram": "4GB",
                     "storage": "15GB SSD",
                     "status": "online",
-                    "image": "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop",
+                    "image": "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop",
                     "created_at": datetime.utcnow(),
                     "updated_at": datetime.utcnow()
                 },
@@ -52,7 +52,7 @@ class Database:
                     "ram": "8GB",
                     "storage": "25GB SSD",
                     "status": "online",
-                    "image": "https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop",
+                    "image": "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop",
                     "created_at": datetime.utcnow(),
                     "updated_at": datetime.utcnow()
                 },
@@ -63,7 +63,7 @@ class Database:
                     "ram": "6GB",
                     "storage": "20GB SSD",
                     "status": "maintenance",
-                    "image": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=400&h=300&fit=crop",
+                    "image": "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?w=400&h=300&fit=crop",
                     "created_at": datetime.utcnow(),
                     "updated_at": datetime.utcnow()
                 }
