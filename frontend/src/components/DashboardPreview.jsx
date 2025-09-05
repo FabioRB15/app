@@ -5,6 +5,7 @@ import { Button } from './ui/button';
 import { apiService } from '../services/api';
 import LoadingSpinner from './LoadingSpinner';
 import ErrorMessage from './ErrorMessage';
+import MysticBackground from './MysticBackground';
 import { TrendingUp, TrendingDown, Play, Settings, Users, HardDrive } from 'lucide-react';
 
 const DashboardPreview = () => {
