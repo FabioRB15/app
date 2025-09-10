@@ -3,12 +3,15 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "./components/ui/toaster";
 import { ThemeProvider } from "./contexts/ThemeContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import DashboardPreview from "./components/DashboardPreview";
 import Pricing from "./components/Pricing";
 import Support from "./components/Support";
 import Footer from "./components/Footer";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
 
 const Home = () => {
   return (
@@ -26,14 +29,18 @@ const Home = () => {
 function App() {
   return (
     <ThemeProvider>
-      <div className="App">
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-          </Routes>
-          <Toaster />
-        </BrowserRouter>
-      </div>
+      <AuthProvider>
+        <div className="App">
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+            </Routes>
+            <Toaster />
+          </BrowserRouter>
+        </div>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
