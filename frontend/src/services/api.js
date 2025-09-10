@@ -120,6 +120,49 @@ export const apiService = {
     }
   },
 
+  // Authentication
+  async login(credentials) {
+    try {
+      const response = await api.post('/auth/login', credentials);
+      return response.data;
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
+  },
+
+  async register(userData) {
+    try {
+      const response = await api.post('/auth/register', userData);
+      return response.data;
+    } catch (error) {
+      console.error('Registration failed:', error);
+      throw error;
+    }
+  },
+
+  async socialLogin(provider, socialData) {
+    try {
+      const response = await api.post('/auth/social', { provider, ...socialData });
+      return response.data;
+    } catch (error) {
+      console.error('Social login failed:', error);
+      throw error;
+    }
+  },
+
+  async verifyToken(token) {
+    try {
+      const response = await api.get('/auth/verify', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Token verification failed:', error);
+      throw error;
+    }
+  },
+
   // Health check
   async healthCheck() {
     try {
