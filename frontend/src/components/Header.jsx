@@ -121,12 +121,38 @@ const Header = () => {
                 Suporte
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="ghost" className="justify-start text-gray-700 dark:text-gray-300">
-                  Entrar
-                </Button>
-                <Button className="bg-gradient-to-r from-purple-600 to-indigo-600 justify-start shadow-lg shadow-purple-500/25">
-                  Começar Grátis
-                </Button>
+                {isAuthenticated ? (
+                  <>
+                    <Button variant="ghost" className="justify-start text-gray-700 dark:text-gray-300">
+                      <User className="w-4 h-4 mr-2" />
+                      {user?.name}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-gray-700 dark:text-gray-300"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="w-4 h-4 mr-2" />
+                      Sair
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-gray-700 dark:text-gray-300"
+                      onClick={() => navigate('/login')}
+                    >
+                      Entrar
+                    </Button>
+                    <Button 
+                      className="bg-gradient-to-r from-purple-600 to-indigo-600 justify-start shadow-lg shadow-purple-500/25"
+                      onClick={() => navigate('/register')}
+                    >
+                      Começar Grátis
+                    </Button>
+                  </>
+                )}
               </div>
             </nav>
           </div>
