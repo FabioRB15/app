@@ -16,7 +16,8 @@ from models import (
     PricingPlan, PricingPlanCreate, PricingPlanResponse,
     DashboardStat, DashboardStatsResponse,
     Testimonial, TestimonialCreate, TestimonialResponse,
-    SupportRequest, SupportRequestCreate, SupportRequestResponse
+    SupportRequest, SupportRequestCreate, SupportRequestResponse,
+    User, UserCreate, UserLogin, SocialLoginData, AuthResponse
 )
 from database import Database
 
