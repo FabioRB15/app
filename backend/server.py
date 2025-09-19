@@ -1,10 +1,14 @@
-from fastapi import FastAPI, APIRouter, HTTPException
+from fastapi import FastAPI, APIRouter, HTTPException, status, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from pathlib import Path
 import os
 import logging
 from motor.motor_asyncio import AsyncIOMotorClient
+import jwt
+import bcrypt
+from datetime import datetime, timedelta
 
 # Import models and database
 from models import (
