@@ -218,6 +218,173 @@ async def submit_support_request(request_data: SupportRequestCreate):
         logger.error(f"Error submitting support request: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+# Authentication Endpoints
+@api_router.post("/auth/register", response_model=AuthResponse, status_code=status.HTTP_201_CREATED)
+async def register_user(user_data: UserCreate):
+    """Register a new user with email and password"""
+    try:
+        # Check if user already exists
+        existing_user = await db.users.find_one({"email": user_data.email})
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="User with this email already exists"
+            )
+        
+        # Create new user
+        hashed_password = hash_password(user_data.password)
+        user = User(
+            name=user_data.name,
+            email=user_data.email,
+            password_hash=hashed_password,
+            provider="email",
+            is_verified=True  # Auto-verify for demo
+        )
+        
+        # Save to database
+        await db.users.insert_one(user.dict())
+        
+        # Create JWT token
+        token = create_jwt_token(user.id, user.email)
+        
+        # Remove password hash from response
+        user_response = user.dict()
+        user_response.pop('password_hash', None)
+        
+        return AuthResponse(
+            user=User(**user_response),
+            token=token,
+            message="User registered successfully"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error registering user: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@api_router.post("/auth/login", response_model=AuthResponse)
+async def login_user(login_data: UserLogin):
+    """Login user with email and password"""
+    try:
+        # Find user
+        user_doc = await db.users.find_one({"email": login_data.email})
+        if not user_doc:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+        
+        user = User(**user_doc)
+        
+        # Check password
+        if not user.password_hash or not verify_password(login_data.password, user.password_hash):
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid email or password"
+            )
+        
+        # Create JWT token
+        token = create_jwt_token(user.id, user.email)
+        
+        # Remove password hash from response
+        user_response = user.dict()
+        user_response.pop('password_hash', None)
+        
+        return AuthResponse(
+            user=User(**user_response),
+            token=token,
+            message="Login successful"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error logging in user: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@api_router.post("/auth/social", response_model=AuthResponse)
+async def social_login(social_data: SocialLoginData):
+    """Login or register user with social provider (Google/Facebook)"""
+    try:
+        # Check if user exists by email
+        user_doc = await db.users.find_one({"email": social_data.email})
+        
+        if user_doc:
+            # User exists, update with social info if needed
+            user = User(**user_doc)
+            updated = False
+            
+            if user.provider != social_data.provider:
+                user.provider = social_data.provider
+                user.provider_id = social_data.id
+                updated = True
+            
+            if social_data.picture and user.avatar != social_data.picture:
+                user.avatar = social_data.picture
+                updated = True
+            
+            if updated:
+                user.updated_at = datetime.utcnow()
+                await db.users.replace_one({"id": user.id}, user.dict())
+        else:
+            # Create new user from social data
+            user = User(
+                name=social_data.name,
+                email=social_data.email,
+                avatar=social_data.picture,
+                provider=social_data.provider,
+                provider_id=social_data.id,
+                is_verified=True  # Social logins are pre-verified
+            )
+            await db.users.insert_one(user.dict())
+        
+        # Create JWT token
+        token = create_jwt_token(user.id, user.email)
+        
+        # Remove password hash from response
+        user_response = user.dict()
+        user_response.pop('password_hash', None)
+        
+        return AuthResponse(
+            user=User(**user_response),
+            token=token,
+            message="Social login successful"
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error with social login: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@api_router.get("/auth/verify")
+async def verify_token(current_user: User = Depends(get_current_user)):
+    """Verify JWT token and return user info"""
+    if not current_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired token"
+        )
+    
+    # Remove password hash from response
+    user_response = current_user.dict()
+    user_response.pop('password_hash', None)
+    
+    return {"user": User(**user_response), "message": "Token is valid"}
+
+@api_router.get("/auth/me")
+async def get_current_user_info(current_user: User = Depends(get_current_user)):
+    """Get current user information"""
+    if not current_user:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Authentication required"
+        )
+    
+    # Remove password hash from response
+    user_response = current_user.dict()
+    user_response.pop('password_hash', None)
+    
+    return {"user": User(**user_response)}
+
 # Root endpoint for health check
 @api_router.get("/")
 async def root():
