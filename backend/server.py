@@ -400,9 +400,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Add missing import
-from datetime import datetime
-
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
