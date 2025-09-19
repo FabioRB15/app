@@ -103,3 +103,39 @@ class TestimonialResponse(BaseModel):
 class SupportRequestResponse(BaseModel):
     message: str
     request_id: str
+
+# User Authentication Models
+class User(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    name: str
+    email: str
+    password_hash: Optional[str] = None  # None for social login users
+    avatar: Optional[str] = None
+    provider: str = "email"  # "email", "google", "facebook"
+    provider_id: Optional[str] = None  # ID from social provider
+    is_active: bool = True
+    is_verified: bool = False
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow)
+
+class UserCreate(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+class SocialLoginData(BaseModel):
+    provider: str  # "google" or "facebook"
+    id: str        # Provider user ID
+    name: str
+    email: str
+    picture: Optional[str] = None
+    token: str     # Provider access token
+
+class AuthResponse(BaseModel):
+    user: User
+    token: str
+    message: str
