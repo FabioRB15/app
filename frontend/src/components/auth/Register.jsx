@@ -76,22 +76,30 @@ const Register = () => {
 
     setIsSubmitting(true);
     
-    const result = await register({
-      name: formData.name,
-      email: formData.email,
-      password: formData.password
-    });
-    
-    if (result.success) {
-      toast({
-        title: "Conta criada!",
-        description: "Bem-vindo ao Mystic Host!",
+    try {
+      const result = await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password
       });
-      navigate('/dashboard');
-    } else {
+      
+      if (result.success) {
+        toast({
+          title: "Conta criada!",
+          description: "Bem-vindo ao Mystic Host!",
+        });
+        navigate('/');
+      } else {
+        toast({
+          title: "Erro no cadastro",
+          description: result.error || "Erro ao criar conta.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
       toast({
         title: "Erro no cadastro",
-        description: result.error || "Erro ao criar conta.",
+        description: "Erro interno do servidor.",
         variant: "destructive"
       });
     }
@@ -99,65 +107,12 @@ const Register = () => {
     setIsSubmitting(false);
   };
 
-  const handleGoogleSuccess = async (response) => {
-    const { profileObj, tokenId } = response;
-    
-    const result = await socialLogin('google', {
-      id: profileObj.googleId,
-      name: profileObj.name,
-      email: profileObj.email,
-      picture: profileObj.imageUrl,
-      token: tokenId
-    });
-
-    if (result.success) {
-      toast({
-        title: "Conta criada!",
-        description: "Bem-vindo ao Mystic Host!",
-      });
-      navigate('/dashboard');
-    } else {
-      toast({
-        title: "Erro no cadastro",
-        description: result.error || "Erro no cadastro com Google.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleGoogleFailure = (error) => {
-    console.error('Google signup failed:', error);
+  const handleSocialLogin = async (provider) => {
     toast({
-      title: "Erro no cadastro",
-      description: "Falha ao conectar com Google.",
-      variant: "destructive"
+      title: "Funcionalidade em desenvolvimento",
+      description: `Cadastro com ${provider} será implementado em breve.`,
+      variant: "default"
     });
-  };
-
-  const handleFacebookResponse = async (response) => {
-    if (response.accessToken) {
-      const result = await socialLogin('facebook', {
-        id: response.id,
-        name: response.name,
-        email: response.email,
-        picture: response.picture?.data?.url,
-        token: response.accessToken
-      });
-
-      if (result.success) {
-        toast({
-          title: "Conta criada!",
-          description: "Bem-vindo ao Mystic Host!",
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Erro no cadastro",
-          description: result.error || "Erro no cadastro com Facebook.",
-          variant: "destructive"
-        });
-      }
-    }
   };
 
   if (isLoading) {
