@@ -44,18 +44,26 @@ const Login = () => {
 
     setIsSubmitting(true);
     
-    const result = await login(formData);
-    
-    if (result.success) {
-      toast({
-        title: "Login realizado!",
-        description: "Bem-vindo ao Mystic Host!",
-      });
-      navigate('/dashboard');
-    } else {
+    try {
+      const result = await login(formData);
+      
+      if (result.success) {
+        toast({
+          title: "Login realizado!",
+          description: "Bem-vindo ao Mystic Host!",
+        });
+        navigate('/');
+      } else {
+        toast({
+          title: "Erro no login",
+          description: result.error || "Credenciais inválidas.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
       toast({
         title: "Erro no login",
-        description: result.error || "Credenciais inválidas.",
+        description: "Erro interno do servidor.",
         variant: "destructive"
       });
     }
@@ -63,65 +71,12 @@ const Login = () => {
     setIsSubmitting(false);
   };
 
-  const handleGoogleSuccess = async (response) => {
-    const { profileObj, tokenId } = response;
-    
-    const result = await socialLogin('google', {
-      id: profileObj.googleId,
-      name: profileObj.name,
-      email: profileObj.email,
-      picture: profileObj.imageUrl,
-      token: tokenId
-    });
-
-    if (result.success) {
-      toast({
-        title: "Login realizado!",
-        description: "Bem-vindo ao Mystic Host!",
-      });
-      navigate('/dashboard');
-    } else {
-      toast({
-        title: "Erro no login",
-        description: result.error || "Erro no login com Google.",
-        variant: "destructive"
-      });
-    }
-  };
-
-  const handleGoogleFailure = (error) => {
-    console.error('Google login failed:', error);
+  const handleSocialLogin = async (provider) => {
     toast({
-      title: "Erro no login",
-      description: "Falha ao conectar com Google.",
-      variant: "destructive"
+      title: "Funcionalidade em desenvolvimento",
+      description: `Login com ${provider} será implementado em breve.`,
+      variant: "default"
     });
-  };
-
-  const handleFacebookResponse = async (response) => {
-    if (response.accessToken) {
-      const result = await socialLogin('facebook', {
-        id: response.id,
-        name: response.name,
-        email: response.email,
-        picture: response.picture?.data?.url,
-        token: response.accessToken
-      });
-
-      if (result.success) {
-        toast({
-          title: "Login realizado!",
-          description: "Bem-vindo ao Mystic Host!",
-        });
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Erro no login",
-          description: result.error || "Erro no login com Facebook.",
-          variant: "destructive"
-        });
-      }
-    }
   };
 
   if (isLoading) {
