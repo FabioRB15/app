@@ -172,6 +172,48 @@ export const apiService = {
       console.error('Health check failed:', error);
       throw error;
     }
+  },
+
+  // Password Reset
+  async forgotPassword(data) {
+    try {
+      const response = await api.post('/auth/forgot-password', data);
+      return response.data;
+    } catch (error) {
+      console.error('Forgot password failed:', error);
+      throw error;
+    }
+  },
+
+  async resetPassword(data) {
+    try {
+      const response = await api.post('/auth/reset-password', data);
+      return response.data;
+    } catch (error) {
+      console.error('Reset password failed:', error);
+      throw error;
+    }
+  },
+
+  // Email Verification
+  async resendVerificationEmail(data) {
+    try {
+      const response = await api.post('/auth/resend-verification', data);
+      return response.data;
+    } catch (error) {
+      console.error('Resend verification failed:', error);
+      throw error;
+    }
+  },
+
+  async verifyEmail(token) {
+    try {
+      const response = await api.get(`/auth/verify-email/${token}`);
+      return response.data;
+    } catch (error) {
+      console.error('Email verification failed:', error);
+      throw error;
+    }
   }
 };
 
