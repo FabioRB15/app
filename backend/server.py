@@ -412,6 +412,195 @@ async def get_current_user_info(current_user: User = Depends(get_current_user)):
     
     return {"user": User(**user_response)}
 
+# Password Reset Endpoints
+@api_router.post("/auth/forgot-password")
+async def forgot_password(request_data: PasswordResetRequest):
+    """Request password reset - sends reset token via email"""
+    try:
+        # Check if user exists
+        user_doc = await db.users.find_one({"email": request_data.email})
+        if not user_doc:
+            # Don't reveal if email exists or not for security
+            return {"message": "If the email exists, a password reset link has been sent"}
+        
+        user = User(**user_doc)
+        
+        # Generate reset token
+        reset_token = generate_reset_token()
+        expires_at = datetime.utcnow() + timedelta(hours=1)  # 1 hour expiry
+        
+        # Store reset token in database
+        password_reset = PasswordResetToken(
+            user_id=user.id,
+            email=user.email,
+            token=reset_token,
+            expires_at=expires_at
+        )
+        
+        # Remove any existing unused tokens for this user
+        await db.password_reset_tokens.delete_many({
+            "user_id": user.id,
+            "used": False
+        })
+        
+        # Insert new token
+        await db.password_reset_tokens.insert_one(password_reset.dict())
+        
+        # Send email (mock implementation)
+        send_password_reset_email(user.email, reset_token)
+        
+        return {"message": "If the email exists, a password reset link has been sent"}
+        
+    except Exception as e:
+        logger.error(f"Error in forgot password: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@api_router.post("/auth/reset-password")
+async def reset_password(reset_data: PasswordResetConfirm):
+    """Reset password using token"""
+    try:
+        # Find valid reset token
+        token_doc = await db.password_reset_tokens.find_one({
+            "token": reset_data.token,
+            "used": False,
+            "expires_at": {"$gt": datetime.utcnow()}
+        })
+        
+        if not token_doc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired reset token"
+            )
+        
+        token_obj = PasswordResetToken(**token_doc)
+        
+        # Get user
+        user_doc = await db.users.find_one({"id": token_obj.user_id})
+        if not user_doc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        
+        user = User(**user_doc)
+        
+        # Validate new password
+        if len(reset_data.new_password) < 6:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Password must be at least 6 characters long"
+            )
+        
+        # Update user's password
+        new_password_hash = hash_password(reset_data.new_password)
+        user.password_hash = new_password_hash
+        user.updated_at = datetime.utcnow()
+        
+        # Save updated user
+        await db.users.replace_one({"id": user.id}, user.dict())
+        
+        # Mark token as used
+        await db.password_reset_tokens.update_one(
+            {"_id": token_doc["_id"]},
+            {"$set": {"used": True}}
+        )
+        
+        return {"message": "Password reset successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error resetting password: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+# Email Verification Endpoints
+@api_router.post("/auth/resend-verification")
+async def resend_verification_email(request_data: EmailVerificationRequest):
+    """Resend email verification"""
+    try:
+        # Check if user exists
+        user_doc = await db.users.find_one({"email": request_data.email})
+        if not user_doc:
+            return {"message": "If the email exists, a verification email has been sent"}
+        
+        user = User(**user_doc)
+        
+        if user.is_verified:
+            return {"message": "Email is already verified"}
+        
+        # Generate verification token
+        verify_token = generate_reset_token()
+        expires_at = datetime.utcnow() + timedelta(hours=24)  # 24 hour expiry
+        
+        # Store verification token
+        verification = EmailVerificationToken(
+            user_id=user.id,
+            email=user.email,
+            token=verify_token,
+            expires_at=expires_at
+        )
+        
+        # Remove any existing tokens for this user
+        await db.email_verification_tokens.delete_many({"user_id": user.id})
+        
+        # Insert new token
+        await db.email_verification_tokens.insert_one(verification.dict())
+        
+        # Send verification email (mock implementation)
+        send_verification_email(user.email, verify_token)
+        
+        return {"message": "Verification email sent"}
+        
+    except Exception as e:
+        logger.error(f"Error resending verification: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+@api_router.get("/auth/verify-email/{token}")
+async def verify_email(token: str):
+    """Verify email using token"""
+    try:
+        # Find valid verification token
+        token_doc = await db.email_verification_tokens.find_one({
+            "token": token,
+            "expires_at": {"$gt": datetime.utcnow()}
+        })
+        
+        if not token_doc:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid or expired verification token"
+            )
+        
+        token_obj = EmailVerificationToken(**token_doc)
+        
+        # Get user
+        user_doc = await db.users.find_one({"id": token_obj.user_id})
+        if not user_doc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="User not found"
+            )
+        
+        user = User(**user_doc)
+        
+        # Mark user as verified
+        user.is_verified = True
+        user.updated_at = datetime.utcnow()
+        
+        # Save updated user
+        await db.users.replace_one({"id": user.id}, user.dict())
+        
+        # Remove verification token
+        await db.email_verification_tokens.delete_one({"_id": token_doc["_id"]})
+        
+        return {"message": "Email verified successfully"}
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error verifying email: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 # Root endpoint for health check
 @api_router.get("/")
 async def root():
