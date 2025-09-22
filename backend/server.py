@@ -9,6 +9,8 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import jwt
 import bcrypt
 from datetime import datetime, timedelta
+import secrets
+import string
 
 # Import models and database
 from models import (
