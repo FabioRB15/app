@@ -265,11 +265,25 @@ async def register_user(user_data: UserCreate):
             email=user_data.email,
             password_hash=hashed_password,
             provider="email",
-            is_verified=True  # Auto-verify for demo
+            is_verified=False  # Require email verification
         )
         
         # Save to database
         await db.users.insert_one(user.dict())
+        
+        # Generate and send email verification
+        verify_token = generate_reset_token()
+        expires_at = datetime.utcnow() + timedelta(hours=24)
+        
+        verification = EmailVerificationToken(
+            user_id=user.id,
+            email=user.email,
+            token=verify_token,
+            expires_at=expires_at
+        )
+        
+        await db.email_verification_tokens.insert_one(verification.dict())
+        send_verification_email(user.email, verify_token)
         
         # Create JWT token
         token = create_jwt_token(user.id, user.email)
@@ -281,7 +295,7 @@ async def register_user(user_data: UserCreate):
         return AuthResponse(
             user=User(**user_response),
             token=token,
-            message="User registered successfully"
+            message="User registered successfully. Please check your email to verify your account."
         )
     except HTTPException:
         raise
