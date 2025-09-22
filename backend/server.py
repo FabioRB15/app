@@ -19,7 +19,9 @@ from models import (
     DashboardStat, DashboardStatsResponse,
     Testimonial, TestimonialCreate, TestimonialResponse,
     SupportRequest, SupportRequestCreate, SupportRequestResponse,
-    User, UserCreate, UserLogin, SocialLoginData, AuthResponse
+    User, UserCreate, UserLogin, SocialLoginData, AuthResponse,
+    PasswordResetRequest, PasswordResetToken, PasswordResetConfirm,
+    EmailVerificationToken, EmailVerificationRequest
 )
 from database import Database
 
