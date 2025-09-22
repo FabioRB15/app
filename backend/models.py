@@ -139,3 +139,32 @@ class AuthResponse(BaseModel):
     user: User
     token: str
     message: str
+
+# Password Reset Models
+class PasswordResetRequest(BaseModel):
+    email: str
+
+class PasswordResetToken(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    email: str
+    token: str
+    expires_at: datetime
+    used: bool = False
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class PasswordResetConfirm(BaseModel):
+    token: str
+    new_password: str
+
+# Email Verification Models
+class EmailVerificationToken(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    email: str
+    token: str
+    expires_at: datetime
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+
+class EmailVerificationRequest(BaseModel):
+    email: str
