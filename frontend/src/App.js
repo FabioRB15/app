@@ -12,6 +12,8 @@ import Support from "./components/Support";
 import Footer from "./components/Footer";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
+import ForgotPassword from "./components/auth/ForgotPassword";
+import ResetPassword from "./components/auth/ResetPassword";
 
 const Home = () => {
   return (
