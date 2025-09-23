@@ -14,6 +14,7 @@ import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 import ForgotPassword from "./components/auth/ForgotPassword";
 import ResetPassword from "./components/auth/ResetPassword";
+import VerifyEmail from "./components/auth/VerifyEmail";
 
 const Home = () => {
   return (
