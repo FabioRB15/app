@@ -81,9 +81,24 @@ const Header = () => {
                   <Button variant="ghost" className="flex items-center space-x-2">
                     <User className="w-4 h-4" />
                     <span>{user?.name}</span>
+                    {!user?.is_verified && (
+                      <Badge variant="secondary" className="ml-2 bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300">
+                        <AlertCircle className="w-3 h-3 mr-1" />
+                        Não verificado
+                      </Badge>
+                    )}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
+                  {!user?.is_verified && (
+                    <>
+                      <DropdownMenuItem onClick={handleResendVerification}>
+                        <Mail className="w-4 h-4 mr-2" />
+                        Verificar Email
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                    </>
+                  )}
                   <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                     <User className="w-4 h-4 mr-2" />
                     Minha Conta
