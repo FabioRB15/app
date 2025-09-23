@@ -12,11 +12,30 @@ import { apiService } from '../services/api';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleResendVerification = async () => {
+    if (!user?.email) return;
+    
+    try {
+      await apiService.resendVerificationEmail({ email: user.email });
+      toast({
+        title: "Email de verificação enviado!",
+        description: "Verifique sua caixa de entrada.",
+      });
+    } catch (error) {
+      toast({
+        title: "Erro ao enviar email",
+        description: "Tente novamente mais tarde.",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
