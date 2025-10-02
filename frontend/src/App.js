@@ -1,21 +1,39 @@
-import React from "react";
+import React, { Suspense, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 import { Toaster } from "./components/ui/toaster";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import ErrorBoundary from "./components/ErrorBoundary";
+import LoadingSpinner from "./components/LoadingSpinner";
+
+// Performance monitoring
+import { initPerformanceMonitoring } from "./utils/performance";
+import { registerSW } from "./utils/serviceWorker";
+
+// SEO Components
+import { HomePageSEO } from "./components/SEO/SEOHead";
+
+// Static components (loaded immediately)
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import DashboardPreview from "./components/DashboardPreview";
-import Pricing from "./components/Pricing";
-import Support from "./components/Support";
 import Footer from "./components/Footer";
-import Login from "./components/auth/Login";
-import Register from "./components/auth/Register";
-import ForgotPassword from "./components/auth/ForgotPassword";
-import ResetPassword from "./components/auth/ResetPassword";
-import VerifyEmail from "./components/auth/VerifyEmail";
-import Dashboard from "./components/dashboard/Dashboard";
+
+// Lazy-loaded components for better performance
+import { 
+  DashboardPreview, 
+  Pricing, 
+  Support,
+  Login,
+  Register
+} from "./components/LazyComponents";
+
+// Lazy load heavy components
+const ForgotPassword = React.lazy(() => import("./components/auth/ForgotPassword"));
+const ResetPassword = React.lazy(() => import("./components/auth/ResetPassword"));
+const VerifyEmail = React.lazy(() => import("./components/auth/VerifyEmail"));
+const Dashboard = React.lazy(() => import("./components/dashboard/Dashboard"));
 
 const Home = () => {
   return (
