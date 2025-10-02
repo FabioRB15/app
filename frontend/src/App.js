@@ -38,36 +38,99 @@ const Dashboard = React.lazy(() => import("./components/dashboard/Dashboard"));
 const Home = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-950 transition-colors">
+      <HomePageSEO />
       <Header />
       <Hero />
-      <DashboardPreview />
-      <Pricing />
-      <Support />
+      <Suspense fallback={<LoadingSpinner />}>
+        <DashboardPreview />
+      </Suspense>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Pricing />
+      </Suspense>
+      <Suspense fallback={<LoadingSpinner />}>
+        <Support />
+      </Suspense>
       <Footer />
     </div>
   );
 };
 
 function App() {
+  useEffect(() => {
+    // Initialize performance monitoring
+    initPerformanceMonitoring();
+    
+    // Register service worker for caching
+    if (process.env.NODE_ENV === 'production') {
+      registerSW();
+    }
+  }, []);
+
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <div className="App">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/verify-email" element={<VerifyEmail />} />
-              <Route path="/dashboard/*" element={<Dashboard />} />
-            </Routes>
-            <Toaster />
-          </BrowserRouter>
-        </div>
-      </AuthProvider>
-    </ThemeProvider>
+    <HelmetProvider>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <AuthProvider>
+            <div className="App">
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route 
+                    path="/login" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <Login />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="/register" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <Register />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="/forgot-password" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <ForgotPassword />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="/reset-password" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <ResetPassword />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="/verify-email" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <VerifyEmail />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
+                    path="/dashboard/*" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <Dashboard />
+                      </Suspense>
+                    } 
+                  />
+                </Routes>
+                <Toaster />
+              </BrowserRouter>
+            </div>
+          </AuthProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
+    </HelmetProvider>
   );
 }
 
