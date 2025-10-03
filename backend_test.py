@@ -638,6 +638,9 @@ class MysticHostAPITester:
         print(f"Testing backend at: {self.base_url}")
         print("-" * 60)
         
+        # Initialize auth token storage
+        self.auth_token = None
+        
         # Run all tests
         self.test_health_check()
         self.test_get_servers()
@@ -645,6 +648,14 @@ class MysticHostAPITester:
         self.test_get_dashboard_stats()
         self.test_get_testimonials()
         self.test_submit_support_request()
+        self.test_support_request_with_provided_data()
+        
+        # Authentication tests
+        self.test_user_registration()
+        self.test_user_login()
+        self.test_token_verification()
+        
+        # Error handling tests
         self.test_error_handling()
         
         # Summary
