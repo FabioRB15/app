@@ -253,8 +253,10 @@ frontend:
 metadata:
   created_by: "testing_agent"
   version: "1.0"
-  test_sequence: 1
+  test_sequence: 2
   run_ui: false
+  last_comprehensive_test: "2025-10-03T10:18:00Z"
+  performance_tested: true
 
 test_plan:
   current_focus:
