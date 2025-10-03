@@ -61,7 +61,10 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "test": "craco test"
+    "build:analyze": "ANALYZE=true craco build",
+    "test": "craco test",
+    "test:coverage": "craco test --coverage --watchAll=false",
+    "test:ci": "CI=true craco test --coverage --watchAll=false"
   },
   "browserslist": {
     "production": [
