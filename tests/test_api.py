@@ -11,6 +11,7 @@ from datetime import datetime
 
 import sys
 import os
+import bcrypt
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'backend'))
 
 from server import app, db
