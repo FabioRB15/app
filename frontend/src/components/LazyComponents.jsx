@@ -14,9 +14,9 @@ export const Support = lazy(() => import('./Support'));
 export const Login = lazy(() => import('./auth/Login'));
 export const Register = lazy(() => import('./auth/Register'));
 
-// Dashboard components
-export const ServerManagement = lazy(() => import('./dashboard/ServerManagement'));
-export const Analytics = lazy(() => import('./dashboard/Analytics'));
+// Dashboard components (only if they exist)
+// export const ServerManagement = lazy(() => import('./dashboard/ServerManagement'));
+// export const Analytics = lazy(() => import('./dashboard/Analytics'));
 
 // Wrapper component for lazy components with loading fallback
 export const LazyWrapper = ({ children, fallback = <LoadingSpinner /> }) => {
