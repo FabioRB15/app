@@ -333,6 +333,224 @@ class MysticHostAPITester:
         except requests.exceptions.RequestException as e:
             self.log_test("Submit Support Request", False, f"Request failed: {str(e)}")
     
+    def test_user_registration(self):
+        """Test POST /api/auth/register endpoint"""
+        try:
+            # Test data as specified in the review request
+            registration_data = {
+                "name": "João Test",
+                "email": "joao.test@example.com",
+                "password": "senhaSegura123"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/auth/register", 
+                json=registration_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 201:
+                data = response.json()
+                if "user" in data and "token" in data and "message" in data:
+                    user = data["user"]
+                    if user.get("email") == registration_data["email"] and user.get("name") == registration_data["name"]:
+                        self.log_test(
+                            "User Registration", 
+                            True, 
+                            f"User registered successfully - {user['name']} ({user['email']})", 
+                            {"user_id": user.get("id"), "email": user["email"]}
+                        )
+                        # Store token for later tests
+                        self.auth_token = data["token"]
+                    else:
+                        self.log_test(
+                            "User Registration", 
+                            False, 
+                            "User data mismatch in response", 
+                            data
+                        )
+                else:
+                    self.log_test(
+                        "User Registration", 
+                        False, 
+                        "Response missing required fields (user, token, message)", 
+                        data
+                    )
+            elif response.status_code == 400:
+                # User might already exist, which is acceptable
+                data = response.json()
+                if "already exists" in data.get("detail", "").lower():
+                    self.log_test(
+                        "User Registration", 
+                        True, 
+                        "User already exists - registration validation working correctly", 
+                        data
+                    )
+                else:
+                    self.log_test(
+                        "User Registration", 
+                        False, 
+                        f"HTTP 400: {data.get('detail', response.text)}", 
+                        data
+                    )
+            else:
+                self.log_test(
+                    "User Registration", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("User Registration", False, f"Request failed: {str(e)}")
+    
+    def test_user_login(self):
+        """Test POST /api/auth/login endpoint"""
+        try:
+            # Test data as specified in the review request
+            login_data = {
+                "email": "joao.test@example.com",
+                "password": "senhaSegura123"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/auth/login", 
+                json=login_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "user" in data and "token" in data and "message" in data:
+                    user = data["user"]
+                    if user.get("email") == login_data["email"]:
+                        self.log_test(
+                            "User Login", 
+                            True, 
+                            f"User logged in successfully - {user['name']} ({user['email']})", 
+                            {"user_id": user.get("id"), "email": user["email"]}
+                        )
+                        # Store token for verification test
+                        self.auth_token = data["token"]
+                    else:
+                        self.log_test(
+                            "User Login", 
+                            False, 
+                            "User email mismatch in response", 
+                            data
+                        )
+                else:
+                    self.log_test(
+                        "User Login", 
+                        False, 
+                        "Response missing required fields (user, token, message)", 
+                        data
+                    )
+            else:
+                self.log_test(
+                    "User Login", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("User Login", False, f"Request failed: {str(e)}")
+    
+    def test_token_verification(self):
+        """Test GET /api/auth/verify endpoint"""
+        try:
+            # Use token from login test if available
+            if not hasattr(self, 'auth_token'):
+                self.log_test(
+                    "Token Verification", 
+                    False, 
+                    "No auth token available - login test must run first"
+                )
+                return
+            
+            headers = {
+                "Authorization": f"Bearer {self.auth_token}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.get(
+                f"{self.base_url}/auth/verify", 
+                headers=headers,
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "user" in data and "message" in data:
+                    user = data["user"]
+                    self.log_test(
+                        "Token Verification", 
+                        True, 
+                        f"Token verified successfully for user {user.get('name', 'Unknown')}", 
+                        {"user_id": user.get("id"), "email": user.get("email")}
+                    )
+                else:
+                    self.log_test(
+                        "Token Verification", 
+                        False, 
+                        "Response missing required fields (user, message)", 
+                        data
+                    )
+            else:
+                self.log_test(
+                    "Token Verification", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Token Verification", False, f"Request failed: {str(e)}")
+    
+    def test_support_request_with_provided_data(self):
+        """Test POST /api/support/contact endpoint with provided test data"""
+        try:
+            # Test data as specified in the review request
+            support_data = {
+                "name": "Maria Silva",
+                "email": "maria@example.com",
+                "subject": "Dúvida sobre servidor",
+                "message": "Gostaria de saber mais sobre os planos de Minecraft."
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/support/contact", 
+                json=support_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "message" in data and "request_id" in data:
+                    self.log_test(
+                        "Support Request (Provided Data)", 
+                        True, 
+                        f"Support request submitted successfully - ID: {data['request_id']}", 
+                        data
+                    )
+                else:
+                    self.log_test(
+                        "Support Request (Provided Data)", 
+                        False, 
+                        "Response missing required fields (message, request_id)", 
+                        data
+                    )
+            else:
+                self.log_test(
+                    "Support Request (Provided Data)", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Support Request (Provided Data)", False, f"Request failed: {str(e)}")
+    
     def test_error_handling(self):
         """Test error handling for invalid endpoints"""
         try:
@@ -381,6 +599,36 @@ class MysticHostAPITester:
                 
         except requests.exceptions.RequestException as e:
             self.log_test("Error Handling - Validation", False, f"Request failed: {str(e)}")
+        
+        try:
+            # Test invalid login credentials
+            invalid_login = {
+                "email": "nonexistent@example.com",
+                "password": "wrongpassword"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/auth/login", 
+                json=invalid_login,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 401:
+                self.log_test(
+                    "Error Handling - Invalid Login", 
+                    True, 
+                    "Correctly returns 401 for invalid credentials"
+                )
+            else:
+                self.log_test(
+                    "Error Handling - Invalid Login", 
+                    False, 
+                    f"Expected 401 for invalid login, got {response.status_code}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("Error Handling - Invalid Login", False, f"Request failed: {str(e)}")
     
     def run_all_tests(self):
         """Run all API tests"""
