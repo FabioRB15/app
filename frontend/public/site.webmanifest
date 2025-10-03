@@ -1,0 +1,71 @@
+{
+  "name": "Mystic Host - Hospedagem de Servidores de Jogos",
+  "short_name": "Mystic Host",
+  "description": "A melhor hospedagem de servidores de jogos do Brasil. Minecraft, CS2, Rust e muito mais.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3B82F6",
+  "orientation": "portrait-primary",
+  "categories": ["games", "business", "productivity"],
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png", 
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512", 
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Acesse seu dashboard de servidores",
+      "url": "/dashboard",
+      "icons": [
+        {
+          "src": "/icons/dashboard-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Suporte",
+      "short_name": "Suporte",
+      "description": "Entre em contato conosco",
+      "url": "/#suporte",
+      "icons": [
+        {
+          "src": "/icons/support-96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "id": "mystic-host-pwa"
+}
