@@ -77,6 +77,14 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route 
+                    path="/jogos" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <Games />
+                      </Suspense>
+                    } 
+                  />
+                  <Route 
                     path="/login" 
                     element={
                       <Suspense fallback={<LoadingSpinner />}>
