@@ -153,7 +153,7 @@ const supportedGames = [
     type: "generic",
     players: "16",
     description: "Construção e engenharia no espaço com física realista.",
-    image: "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/244850/ss_2d869ee64781a9b3c6c290579d8fdb901d02fec4.1920x1080.jpg",
     features: ["Física real", "Construção", "Mods", "Scripting"],
     popular: false,
     official: true
