@@ -81,7 +81,7 @@ const supportedGames = [
     type: "generic",
     players: "255",
     description: "Aventura 2D com exploração, construção e combate.",
-    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/ss_c4bc6b3414bbfcf039ebe8d308c15a4906e0a7c6.1920x1080.jpg",
     features: ["Mods tModLoader", "Eventos", "Bosses", "Multiplayer"],
     popular: false,
     official: true
