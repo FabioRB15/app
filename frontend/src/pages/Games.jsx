@@ -105,7 +105,7 @@ const supportedGames = [
     type: "generic",
     players: "16",
     description: "Survival horror com zumbis em mundo voxel.",
-    image: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/251570/ss_9091450cf4058df2c5bb85c3d3b9204b1b65c4a5.1920x1080.jpg",
     features: ["Crafting", "Horde nights", "Mods", "Building"],
     popular: false,
     official: true
