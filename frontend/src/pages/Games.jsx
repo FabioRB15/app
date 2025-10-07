@@ -117,7 +117,7 @@ const supportedGames = [
     type: "generic", 
     players: "32+",
     description: "Survival isométrico em apocalipse zumbi.",
-    image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/108600/ss_1a59a8657e1f3e633004ce181cf865588e989313.1920x1080.jpg",
     features: ["Survival realista", "Crafting", "Mods", "Multiplayer"],
     popular: false,
     official: true
