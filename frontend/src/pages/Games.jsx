@@ -141,7 +141,7 @@ const supportedGames = [
     type: "generic",
     players: "4",
     description: "Jogo de construção de fábrica em primeira pessoa 3D.",
-    image: "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/526870/ss_053ec3f8c54fdd9e7bf62e4a3ff7e2e9691d0849.1920x1080.jpg",
     features: ["Co-op", "Construção 3D", "Automação", "Exploração"],
     popular: false,
     official: true
