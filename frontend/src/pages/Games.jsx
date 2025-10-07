@@ -45,7 +45,7 @@ const supportedGames = [
     type: "generic",
     players: "10",
     description: "Aventura co-op inspirada na cultura viking e mitologia nórdica.",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/ss_ce5b7825d2de92db076ba74c1430bba4aff96395.1920x1080.jpg",
     features: ["Co-op", "Boss battles", "Construção", "Exploração"],
     popular: true,
     official: true
