@@ -21,7 +21,7 @@ const supportedGames = [
     type: "dedicated",
     players: "Ilimitado",
     description: "O clássico jogo de construção em blocos com suporte completo a plugins e mods.",
-    image: "https://wallpaperaccess.com/full/1106193.jpg",
+    image: "https://www.minecraft.net/content/dam/games/minecraft/key-art/Games_Subnav_Minecraft-300x465.jpg",
     features: ["Plugins", "Mods", "Whitelist", "Backups automáticos"],
     popular: true,
     official: true
