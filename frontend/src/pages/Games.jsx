@@ -17,11 +17,11 @@ const supportedGames = [
   {
     id: 1,
     name: "Minecraft Java Edition",
-    category: "Sandbox",
+    category: "Sandbox", 
     type: "dedicated",
     players: "Ilimitado",
     description: "O clássico jogo de construção em blocos com suporte completo a plugins e mods.",
-    image: "https://images.unsplash.com/photo-1606092195730-5d7b9af1efc5?w=400&h=300&fit=crop",
+    image: "https://wallpaperaccess.com/full/1106193.jpg",
     features: ["Plugins", "Mods", "Whitelist", "Backups automáticos"],
     popular: true,
     official: true
