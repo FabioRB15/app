@@ -129,7 +129,7 @@ const supportedGames = [
     type: "generic",
     players: "65000+",
     description: "Construa e automatize fábricas em alien planet.",
-    image: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/427520/ss_6b498ec8923c7be3b5cc7c86322c5aca6781158a.1920x1080.jpg",
     features: ["Automação", "Mods", "Multiplayer", "Logística"],
     popular: false,
     official: true
