@@ -21,7 +21,7 @@ const supportedGames = [
     type: "dedicated",
     players: "Ilimitado",
     description: "O clássico jogo de construção em blocos com suporte completo a plugins e mods.",
-    image: "https://via.placeholder.com/400x300/3B82F6/FFFFFF?text=Minecraft",
+    image: "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=🧱+Minecraft",
     features: ["Plugins", "Mods", "Whitelist", "Backups automáticos"],
     popular: true,
     official: true
@@ -33,7 +33,7 @@ const supportedGames = [
     type: "dedicated", 
     players: "200+",
     description: "Survival multiplayer com foco em PvP e construção de bases.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/252490/ss_85dcaaee235e53a6030a8c0b14bdbfa1e8fa08e8.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=🔥+Rust+Survival",
     features: ["Óxido plugins", "Blueprints", "Kits", "Economia"],
     popular: true,
     official: true
@@ -45,7 +45,7 @@ const supportedGames = [
     type: "generic",
     players: "10",
     description: "Aventura co-op inspirada na cultura viking e mitologia nórdica.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/ss_ce5b7825d2de92db076ba74c1430bba4aff96395.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/4B5563/FFFFFF?text=⚔️+Valheim+Viking",
     features: ["Co-op", "Boss battles", "Construção", "Exploração"],
     popular: true,
     official: true
@@ -57,7 +57,7 @@ const supportedGames = [
     type: "generic",
     players: "64",
     description: "FPS competitivo com modo clássico de bombas e reféns.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_34309d859166c4b6b22674a8d2b38bb85b3dcdf0.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/DC2626/FFFFFF?text=🔫+Counter-Strike+2",
     features: ["Mapas customizados", "Mods", "Torneios", "Ranking"],
     popular: true,
     official: true
@@ -69,7 +69,7 @@ const supportedGames = [
     type: "generic",
     players: "150+",
     description: "Survival com dinossauros e criaturas em mundo aberto.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/346110/ss_f2cb1db6edd2171366e6c71698de75d9b49c5f2e.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/059669/FFFFFF?text=🦖+ARK+Dinosaurs",
     features: ["Dinossauros", "Construção", "Tribes", "Mods"],
     popular: true,
     official: true
@@ -81,7 +81,7 @@ const supportedGames = [
     type: "generic",
     players: "255",
     description: "Aventura 2D com exploração, construção e combate.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/ss_c4bc6b3414bbfcf039ebe8d308c15a4906e0a7c6.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/10B981/FFFFFF?text=⛏️+Terraria+2D",
     features: ["Mods tModLoader", "Eventos", "Bosses", "Multiplayer"],
     popular: false,
     official: true
@@ -93,7 +93,7 @@ const supportedGames = [
     type: "generic",
     players: "128",
     description: "Sandbox criativo com física e possibilidades infinitas.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/4000/ss_6e805a0de4c0b15875455c5226d2f508c03b0b0f.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/F59E0B/FFFFFF?text=🔧+Garry's+Mod",
     features: ["Addons", "Gamemodes", "Workshop", "Lua scripting"],
     popular: false,
     official: true
@@ -105,7 +105,7 @@ const supportedGames = [
     type: "generic",
     players: "16",
     description: "Survival horror com zumbis em mundo voxel.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/251570/ss_9091450cf4058df2c5bb85c3d3b9204b1b65c4a5.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/7C3AED/FFFFFF?text=🧟+7+Days+Zombie",
     features: ["Crafting", "Horde nights", "Mods", "Building"],
     popular: false,
     official: true
@@ -117,7 +117,7 @@ const supportedGames = [
     type: "generic", 
     players: "32+",
     description: "Survival isométrico em apocalipse zumbi.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/108600/ss_1a59a8657e1f3e633004ce181cf865588e989313.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/DC2626/FFFFFF?text=🩸+Project+Zomboid",
     features: ["Survival realista", "Crafting", "Mods", "Multiplayer"],
     popular: false,
     official: true
@@ -129,7 +129,7 @@ const supportedGames = [
     type: "generic",
     players: "65000+",
     description: "Construa e automatize fábricas em alien planet.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/427520/ss_6b498ec8923c7be3b5cc7c86322c5aca6781158a.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/0891B2/FFFFFF?text=⚙️+Factorio+Factory",
     features: ["Automação", "Mods", "Multiplayer", "Logística"],
     popular: false,
     official: true
@@ -141,7 +141,7 @@ const supportedGames = [
     type: "generic",
     players: "4",
     description: "Jogo de construção de fábrica em primeira pessoa 3D.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/526870/ss_053ec3f8c54fdd9e7bf62e4a3ff7e2e9691d0849.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/059669/FFFFFF?text=🏭+Satisfactory+3D",
     features: ["Co-op", "Construção 3D", "Automação", "Exploração"],
     popular: false,
     official: true
@@ -153,7 +153,7 @@ const supportedGames = [
     type: "generic",
     players: "16",
     description: "Construção e engenharia no espaço com física realista.",
-    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/244850/ss_2d869ee64781a9b3c6c290579d8fdb901d02fec4.1920x1080.jpg",
+    image: "https://via.placeholder.com/400x300/1E40AF/FFFFFF?text=🚀+Space+Engineers",
     features: ["Física real", "Construção", "Mods", "Scripting"],
     popular: false,
     official: true
