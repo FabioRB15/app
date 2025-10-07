@@ -57,7 +57,7 @@ const supportedGames = [
     type: "generic",
     players: "64",
     description: "FPS competitivo com modo clássico de bombas e reféns.",
-    image: "https://images.unsplash.com/photo-1511512578047-dfb367046420?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/ss_34309d859166c4b6b22674a8d2b38bb85b3dcdf0.1920x1080.jpg",
     features: ["Mapas customizados", "Mods", "Torneios", "Ranking"],
     popular: true,
     official: true
