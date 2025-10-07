@@ -69,7 +69,7 @@ const supportedGames = [
     type: "generic",
     players: "150+",
     description: "Survival com dinossauros e criaturas em mundo aberto.",
-    image: "https://images.unsplash.com/photo-1518709594023-6eab9bab7b23?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/346110/ss_f2cb1db6edd2171366e6c71698de75d9b49c5f2e.1920x1080.jpg",
     features: ["Dinossauros", "Construção", "Tribes", "Mods"],
     popular: true,
     official: true
