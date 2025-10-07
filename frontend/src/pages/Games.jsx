@@ -93,7 +93,7 @@ const supportedGames = [
     type: "generic",
     players: "128",
     description: "Sandbox criativo com física e possibilidades infinitas.",
-    image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/4000/ss_6e805a0de4c0b15875455c5226d2f508c03b0b0f.1920x1080.jpg",
     features: ["Addons", "Gamemodes", "Workshop", "Lua scripting"],
     popular: false,
     official: true
