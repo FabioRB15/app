@@ -33,7 +33,7 @@ const supportedGames = [
     type: "dedicated", 
     players: "200+",
     description: "Survival multiplayer com foco em PvP e construção de bases.",
-    image: "https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/252490/ss_85dcaaee235e53a6030a8c0b14bdbfa1e8fa08e8.1920x1080.jpg",
     features: ["Óxido plugins", "Blueprints", "Kits", "Economia"],
     popular: true,
     official: true
