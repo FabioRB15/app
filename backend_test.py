@@ -551,6 +551,351 @@ class MysticHostAPITester:
         except requests.exceptions.RequestException as e:
             self.log_test("Support Request (Provided Data)", False, f"Request failed: {str(e)}")
     
+    def test_amp_login_and_get_token(self):
+        """Login with test user to get JWT token for AMP testing"""
+        try:
+            # First try to login with existing test user
+            login_data = {
+                "email": "test@example.com",
+                "password": "Test@123"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/auth/login", 
+                json=login_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "token" in data:
+                    self.auth_token = data["token"]
+                    self.log_test(
+                        "AMP Auth - Login Existing User", 
+                        True, 
+                        f"Successfully logged in as {data.get('user', {}).get('email', 'test@example.com')}"
+                    )
+                    return True
+                else:
+                    self.log_test(
+                        "AMP Auth - Login Existing User", 
+                        False, 
+                        "Login response missing token"
+                    )
+            elif response.status_code == 401:
+                # User doesn't exist or wrong password, try to create user
+                self.log_test(
+                    "AMP Auth - Login Existing User", 
+                    False, 
+                    "Test user doesn't exist, will try to create"
+                )
+                return self.test_amp_create_test_user()
+            else:
+                self.log_test(
+                    "AMP Auth - Login Existing User", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("AMP Auth - Login Existing User", False, f"Request failed: {str(e)}")
+            
+        return False
+    
+    def test_amp_create_test_user(self):
+        """Create test user for AMP testing"""
+        try:
+            registration_data = {
+                "name": "Test User",
+                "email": "test@example.com",
+                "password": "Test@123"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/auth/register", 
+                json=registration_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 201:
+                data = response.json()
+                if "token" in data:
+                    self.auth_token = data["token"]
+                    self.log_test(
+                        "AMP Auth - Create Test User", 
+                        True, 
+                        f"Successfully created and logged in test user"
+                    )
+                    return True
+                else:
+                    self.log_test(
+                        "AMP Auth - Create Test User", 
+                        False, 
+                        "Registration response missing token"
+                    )
+            elif response.status_code == 400:
+                # User already exists, try login again
+                data = response.json()
+                if "already exists" in data.get("detail", "").lower():
+                    # Try login one more time
+                    return self.test_amp_login_retry()
+                else:
+                    self.log_test(
+                        "AMP Auth - Create Test User", 
+                        False, 
+                        f"Registration failed: {data.get('detail', response.text)}"
+                    )
+            else:
+                self.log_test(
+                    "AMP Auth - Create Test User", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("AMP Auth - Create Test User", False, f"Request failed: {str(e)}")
+            
+        return False
+    
+    def test_amp_login_retry(self):
+        """Retry login after user creation attempt"""
+        try:
+            login_data = {
+                "email": "test@example.com",
+                "password": "Test@123"
+            }
+            
+            response = requests.post(
+                f"{self.base_url}/auth/login", 
+                json=login_data,
+                headers={"Content-Type": "application/json"},
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "token" in data:
+                    self.auth_token = data["token"]
+                    self.log_test(
+                        "AMP Auth - Login Retry", 
+                        True, 
+                        "Successfully logged in on retry"
+                    )
+                    return True
+                    
+        except requests.exceptions.RequestException as e:
+            self.log_test("AMP Auth - Login Retry", False, f"Request failed: {str(e)}")
+            
+        return False
+    
+    def test_amp_instances(self):
+        """Test GET /api/amp/instances endpoint"""
+        if not hasattr(self, 'auth_token') or not self.auth_token:
+            self.log_test(
+                "AMP Instances", 
+                False, 
+                "No auth token available - authentication must succeed first"
+            )
+            return
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.auth_token}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.get(
+                f"{self.base_url}/amp/instances", 
+                headers=headers,
+                timeout=30  # AMP calls can be slower
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "success" in data and data["success"]:
+                    instances = data.get("instances", [])
+                    self.log_test(
+                        "AMP Instances", 
+                        True, 
+                        f"Successfully retrieved {len(instances)} AMP instances", 
+                        {"instance_count": len(instances), "message": data.get("message")}
+                    )
+                    # Store first instance ID for status testing
+                    if instances and len(instances) > 0:
+                        self.test_instance_id = instances[0].get("InstanceID") or instances[0].get("Id")
+                else:
+                    self.log_test(
+                        "AMP Instances", 
+                        False, 
+                        f"AMP API returned error: {data.get('message', 'Unknown error')}", 
+                        data
+                    )
+            elif response.status_code == 401:
+                self.log_test(
+                    "AMP Instances", 
+                    False, 
+                    "Authentication failed - token may be invalid"
+                )
+            elif response.status_code == 500:
+                # This might be an AMP connection issue
+                data = response.json() if response.headers.get('content-type', '').startswith('application/json') else {}
+                error_detail = data.get('detail', response.text)
+                self.log_test(
+                    "AMP Instances", 
+                    False, 
+                    f"AMP connection/API error: {error_detail}", 
+                    data
+                )
+            else:
+                self.log_test(
+                    "AMP Instances", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("AMP Instances", False, f"Request failed: {str(e)}")
+    
+    def test_amp_applications(self):
+        """Test GET /api/amp/applications endpoint"""
+        if not hasattr(self, 'auth_token') or not self.auth_token:
+            self.log_test(
+                "AMP Applications", 
+                False, 
+                "No auth token available - authentication must succeed first"
+            )
+            return
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.auth_token}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.get(
+                f"{self.base_url}/amp/applications", 
+                headers=headers,
+                timeout=30  # AMP calls can be slower
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "success" in data and data["success"]:
+                    applications = data.get("applications", [])
+                    self.log_test(
+                        "AMP Applications", 
+                        True, 
+                        f"Successfully retrieved {len(applications) if isinstance(applications, list) else 0} available applications", 
+                        {"application_count": len(applications) if isinstance(applications, list) else 0, "message": data.get("message")}
+                    )
+                else:
+                    self.log_test(
+                        "AMP Applications", 
+                        False, 
+                        f"AMP API returned error: {data.get('message', 'Unknown error')}", 
+                        data
+                    )
+            elif response.status_code == 401:
+                self.log_test(
+                    "AMP Applications", 
+                    False, 
+                    "Authentication failed - token may be invalid"
+                )
+            elif response.status_code == 500:
+                # This might be an AMP connection issue
+                data = response.json() if response.headers.get('content-type', '').startswith('application/json') else {}
+                error_detail = data.get('detail', response.text)
+                self.log_test(
+                    "AMP Applications", 
+                    False, 
+                    f"AMP connection/API error: {error_detail}", 
+                    data
+                )
+            else:
+                self.log_test(
+                    "AMP Applications", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("AMP Applications", False, f"Request failed: {str(e)}")
+    
+    def test_amp_instance_status(self):
+        """Test GET /api/amp/instances/{instance_id} endpoint if instance exists"""
+        if not hasattr(self, 'auth_token') or not self.auth_token:
+            self.log_test(
+                "AMP Instance Status", 
+                False, 
+                "No auth token available - authentication must succeed first"
+            )
+            return
+            
+        if not hasattr(self, 'test_instance_id') or not self.test_instance_id:
+            self.log_test(
+                "AMP Instance Status", 
+                False, 
+                "No instance ID available - instances endpoint must return data first"
+            )
+            return
+            
+        try:
+            headers = {
+                "Authorization": f"Bearer {self.auth_token}",
+                "Content-Type": "application/json"
+            }
+            
+            response = requests.get(
+                f"{self.base_url}/amp/instances/{self.test_instance_id}", 
+                headers=headers,
+                timeout=30  # AMP calls can be slower
+            )
+            
+            if response.status_code == 200:
+                data = response.json()
+                if "success" in data and data["success"]:
+                    status_data = data.get("data", {})
+                    self.log_test(
+                        "AMP Instance Status", 
+                        True, 
+                        f"Successfully retrieved status for instance {self.test_instance_id}", 
+                        {"instance_id": self.test_instance_id, "status_keys": list(status_data.keys()) if isinstance(status_data, dict) else "non-dict"}
+                    )
+                else:
+                    self.log_test(
+                        "AMP Instance Status", 
+                        False, 
+                        f"AMP API returned error: {data.get('message', 'Unknown error')}", 
+                        data
+                    )
+            elif response.status_code == 401:
+                self.log_test(
+                    "AMP Instance Status", 
+                    False, 
+                    "Authentication failed - token may be invalid"
+                )
+            elif response.status_code == 500:
+                # This might be an AMP connection issue
+                data = response.json() if response.headers.get('content-type', '').startswith('application/json') else {}
+                error_detail = data.get('detail', response.text)
+                self.log_test(
+                    "AMP Instance Status", 
+                    False, 
+                    f"AMP connection/API error: {error_detail}", 
+                    data
+                )
+            else:
+                self.log_test(
+                    "AMP Instance Status", 
+                    False, 
+                    f"HTTP {response.status_code}: {response.text}"
+                )
+                
+        except requests.exceptions.RequestException as e:
+            self.log_test("AMP Instance Status", False, f"Request failed: {str(e)}")
+
     def test_error_handling(self):
         """Test error handling for invalid endpoints"""
         try:
