@@ -9,7 +9,7 @@ import time
 import statistics
 from datetime import datetime
 
-BACKEND_URL = "https://proyecto-avanzar.preview.emergentagent.com/api"
+BACKEND_URL = "https://podemos-editor.preview.emergentagent.com/api"
 
 class PerformanceTester:
     def __init__(self):

@@ -11,7 +11,7 @@ import os
 from datetime import datetime
 
 # Get backend URL from environment
-BACKEND_URL = "https://proyecto-avanzar.preview.emergentagent.com/api"
+BACKEND_URL = "https://podemos-editor.preview.emergentagent.com/api"
 
 class MysticHostAPITester:
     def __init__(self):
