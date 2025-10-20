@@ -616,6 +616,244 @@ async def verify_email(token: str):
         raise HTTPException(status_code=500, detail="Internal server error")
 
 # Root endpoint for health check
+# ============= AMP Game Server Management Endpoints =============
+
+from amp_client import get_amp_client, AMPAPIError
+from pydantic import BaseModel as PydanticBaseModel
+
+class ConsoleCommand(PydanticBaseModel):
+    command: str
+
+class CreateServerRequest(PydanticBaseModel):
+    module: str
+    instance_name: str
+    friendly_name: str
+    port_number: int = 25565
+
+@api_router.get("/amp/instances")
+async def get_amp_instances(current_user: User = Depends(get_current_user)):
+    """Get list of all AMP instances/servers"""
+    try:
+        amp = get_amp_client()
+        instances = amp.get_instances()
+        return {
+            "success": True,
+            "message": f"Found {len(instances)} instances",
+            "instances": instances
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch instances: {str(e)}"
+        )
+    except Exception as e:
+        logger.error(f"Unexpected error fetching instances: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
+@api_router.get("/amp/instances/{instance_id}")
+async def get_amp_instance_status(
+    instance_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get detailed status of a specific instance"""
+    try:
+        amp = get_amp_client()
+        status_data = amp.get_instance_status(instance_id)
+        return {
+            "success": True,
+            "message": "Status retrieved successfully",
+            "data": status_data
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get instance status: {str(e)}"
+        )
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal server error"
+        )
+
+@api_router.post("/amp/instances/{instance_id}/start")
+async def start_amp_instance(
+    instance_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Start a stopped instance"""
+    try:
+        amp = get_amp_client()
+        result = amp.start_instance(instance_id)
+        return {
+            "success": True,
+            "message": "Instance start command sent",
+            "data": result
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to start instance: {str(e)}"
+        )
+
+@api_router.post("/amp/instances/{instance_id}/stop")
+async def stop_amp_instance(
+    instance_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Stop a running instance"""
+    try:
+        amp = get_amp_client()
+        result = amp.stop_instance(instance_id)
+        return {
+            "success": True,
+            "message": "Instance stop command sent",
+            "data": result
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to stop instance: {str(e)}"
+        )
+
+@api_router.post("/amp/instances/{instance_id}/restart")
+async def restart_amp_instance(
+    instance_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Restart a running instance"""
+    try:
+        amp = get_amp_client()
+        result = amp.restart_instance(instance_id)
+        return {
+            "success": True,
+            "message": "Instance restart command sent",
+            "data": result
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to restart instance: {str(e)}"
+        )
+
+@api_router.get("/amp/instances/{instance_id}/console")
+async def get_amp_console_output(
+    instance_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Get recent console output from an instance"""
+    try:
+        amp = get_amp_client()
+        output = amp.get_console_output(instance_id)
+        return {
+            "success": True,
+            "message": "Console output retrieved",
+            "entries": output
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to get console output: {str(e)}"
+        )
+
+@api_router.post("/amp/instances/{instance_id}/console")
+async def send_amp_console_command(
+    instance_id: str,
+    command: ConsoleCommand,
+    current_user: User = Depends(get_current_user)
+):
+    """Send a command to the instance console"""
+    try:
+        amp = get_amp_client()
+        result = amp.send_console_command(instance_id, command.command)
+        return {
+            "success": True,
+            "message": "Command sent to console",
+            "data": result
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to send console command: {str(e)}"
+        )
+
+@api_router.get("/amp/applications")
+async def get_amp_applications(current_user: User = Depends(get_current_user)):
+    """Get list of available games/applications"""
+    try:
+        amp = get_amp_client()
+        apps = amp.get_available_applications()
+        return {
+            "success": True,
+            "message": f"Found {len(apps) if isinstance(apps, list) else 0} applications",
+            "applications": apps
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch applications: {str(e)}"
+        )
+
+@api_router.post("/amp/instances")
+async def create_amp_instance(
+    request: CreateServerRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """Create a new game server instance"""
+    try:
+        amp = get_amp_client()
+        result = amp.create_instance(
+            module=request.module,
+            instance_name=request.instance_name,
+            friendly_name=request.friendly_name,
+            port_number=request.port_number
+        )
+        return {
+            "success": True,
+            "message": "Instance created successfully",
+            "data": result
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to create instance: {str(e)}"
+        )
+
+@api_router.delete("/amp/instances/{instance_id}")
+async def delete_amp_instance(
+    instance_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """Delete an instance permanently"""
+    try:
+        amp = get_amp_client()
+        result = amp.delete_instance(instance_id)
+        return {
+            "success": True,
+            "message": "Instance deleted successfully",
+            "data": result
+        }
+    except AMPAPIError as e:
+        logger.error(f"AMP API Error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to delete instance: {str(e)}"
+        )
+
+# ============= End of AMP Endpoints =============
+
 @api_router.get("/")
 async def root():
     return {"message": "Mystic Host API is running", "status": "healthy"}
