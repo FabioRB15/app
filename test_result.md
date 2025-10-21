@@ -201,6 +201,30 @@ backend:
         agent: "testing"
         comment: "✅ Error handling working correctly. Returns proper 404 for non-existent endpoints and 422 validation errors for invalid POST data. FastAPI validation working as expected."
 
+  - task: "AMP Integration - Client"
+    implemented: true
+    working: true
+    file: "backend/amp_client.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "✅ AMP API client implemented with full authentication, instance management, console operations, and application listing. Successfully connects to AMP panel at http://146.235.55.253:8080/. Fixed header issue (requires Accept: text/javascript). Tested and confirmed working with 1 ADS instance found."
+
+  - task: "AMP Integration - API Endpoints"
+    implemented: true
+    working: "NA"
+    file: "backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented 9 AMP endpoints: GET /api/amp/instances (list), GET /api/amp/instances/:id (status), POST /api/amp/instances/:id/start, POST /api/amp/instances/:id/stop, POST /api/amp/instances/:id/restart, GET /api/amp/instances/:id/console (logs), POST /api/amp/instances/:id/console (commands), GET /api/amp/applications, POST /api/amp/instances (create), DELETE /api/amp/instances/:id. All require JWT authentication. Ready for testing."
+
 frontend:
   - task: "Dashboard Preview Display"
     implemented: true
