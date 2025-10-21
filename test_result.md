@@ -344,9 +344,14 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All backend API endpoints tested"
+    - "AMP Integration - API Endpoints"
+    - "Server Management Page"
+    - "Server List Component"
+    - "Server Details Component"
+    - "Server Console Component"
+    - "Create Server Modal"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
@@ -354,3 +359,5 @@ agent_communication:
     message: "Completed comprehensive backend API testing. All 8 test cases passed with 100% success rate. All endpoints are working correctly with proper JSON responses, sample data initialization, and error handling. Backend is fully functional and ready for production use."
   - agent: "testing"
     message: "COMPREHENSIVE BACKEND TEST COMPLETED - 13/13 tests passed (100% success rate). All APIs working perfectly after technical improvements: Health Check ✅, Game Servers ✅, Pricing Plans ✅, Dashboard Stats ✅, Testimonials ✅, Support Requests ✅, User Registration ✅, User Login ✅, Token Verification ✅, Error Handling ✅. Performance excellent: Overall avg 76.48ms response time. Authentication system fully functional with JWT tokens, password hashing, and proper validation. All test scenarios from review request completed successfully."
+  - agent: "main"
+    message: "NOVA FUNCIONALIDADE IMPLEMENTADA: Painel de Gerenciamento de Servidores integrado com AMP (CubeCoders). Backend: Criado amp_client.py com integração completa à API do AMP (login, listar instâncias, status, start/stop/restart, console, criar/deletar servidores). Adicionados 9 endpoints REST em /api/amp/*. Credenciais AMP configuradas no .env. Frontend: Criada página /servers com 4 componentes principais (ServerList, ServerDetails, ServerConsole, CreateServerModal). Interface completa para gerenciar servidores de jogos em tempo real. Testes pendentes: Backend e Frontend testing agents devem validar todos os endpoints AMP e componentes da UI."
