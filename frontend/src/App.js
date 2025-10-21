@@ -35,6 +35,7 @@ const ResetPassword = React.lazy(() => import("./components/auth/ResetPassword")
 const VerifyEmail = React.lazy(() => import("./components/auth/VerifyEmail"));
 const Dashboard = React.lazy(() => import("./components/dashboard/Dashboard"));
 const Games = React.lazy(() => import("./pages/Games"));
+const ServerManagement = React.lazy(() => import("./pages/ServerManagement"));
 
 const Home = () => {
   return (
