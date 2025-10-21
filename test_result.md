@@ -274,6 +274,66 @@ frontend:
         agent: "main"
         comment: "✅ Authentication context properly integrated. Handles user state, login/logout, token storage in localStorage, and provides auth status throughout the app. Header updates correctly to show user name when authenticated."
 
+  - task: "Server Management Page"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/pages/ServerManagement.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Implemented complete server management page at /servers route. Fetches servers from AMP API, displays server list, allows server selection, and shows detailed view. Includes create server button and modal. Requires authentication. Ready for testing."
+
+  - task: "Server List Component"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/servers/ServerList.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Server list component showing all user servers with online/offline status, refresh button, and selection capability. Displays server name, module, and status indicator. Empty state included."
+
+  - task: "Server Details Component"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/servers/ServerDetails.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Detailed server view with tabs for Overview and Console. Shows server stats (CPU, Memory, Players), control buttons (Start/Stop/Restart), and server information. Fetches real-time status from AMP API. Buttons disabled based on server state."
+
+  - task: "Server Console Component"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/servers/ServerConsole.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Real-time console component with log display and command input. Auto-refreshes every 5 seconds. Users can send commands to server console. Displays timestamp, source, and message for each log entry. Includes refresh button."
+
+  - task: "Create Server Modal"
+    implemented: true
+    working: "NA"
+    file: "frontend/src/components/servers/CreateServerModal.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Modal for creating new game servers. Fetches available games/applications from AMP API. Form includes: game selection, instance name (validated pattern), friendly name, and port number. Validates all inputs before submission."
+
 metadata:
   created_by: "testing_agent"
   version: "1.0"
