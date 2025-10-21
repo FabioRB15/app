@@ -258,15 +258,28 @@ class AMPClient:
     
     # ============= Application Management Methods =============
     
-    def get_available_applications(self) -> List[Dict[str, Any]]:
+    def get_available_applications(self, instance_id: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Get list of applications/games that can be deployed.
         
+        Args:
+            instance_id: Optional ADS instance ID. If not provided, uses first available ADS instance.
+            
         Returns:
             List of available application modules
         """
         logger.info("Fetching available applications from AMP")
-        return self._api_call('ADSModule', 'GetApplicationEndpoints')
+        
+        # If no instance_id provided, get the first ADS instance
+        if not instance_id:
+            instances = self.get_instances()
+            ads_instances = [i for i in instances if i.get('Module') == 'ADS']
+            if not ads_instances:
+                raise AMPAPIError("No ADS instance found. Cannot fetch applications.")
+            instance_id = ads_instances[0].get('InstanceID')
+            logger.info(f"Using ADS instance: {instance_id}")
+        
+        return self._api_call('ADSModule', 'GetApplicationEndpoints', {'InstanceId': instance_id})
     
     def create_instance(
         self,
