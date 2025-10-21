@@ -39,8 +39,8 @@ class AMPClient:
         self.session = requests.Session()
         self.session.headers.update({
             'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'User-Agent': 'Mozilla/5.0 (compatible; MysticHost/1.0)'  # Required by AMP!
+            'Accept': 'text/javascript',  # AMP requires text/javascript!
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
         })
     
     def _make_request(self, endpoint: str, data: Dict[str, Any]) -> Dict[str, Any]:
