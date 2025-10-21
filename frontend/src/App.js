@@ -133,6 +133,14 @@ function App() {
                       </Suspense>
                     } 
                   />
+                  <Route 
+                    path="/servers" 
+                    element={
+                      <Suspense fallback={<LoadingSpinner />}>
+                        <ServerManagement />
+                      </Suspense>
+                    } 
+                  />
                 </Routes>
                 <Toaster />
               </BrowserRouter>
