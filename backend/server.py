@@ -398,6 +398,101 @@ async def social_login(social_data: SocialLoginData):
         logger.error(f"Error with social login: {e}")
         raise HTTPException(status_code=500, detail="Internal server error")
 
+@api_router.post("/auth/google", response_model=AuthResponse)
+async def google_login(request_data: dict):
+    """Login or register user with Google OAuth token"""
+    try:
+        # Get the credential token from request
+        credential = request_data.get('credential')
+        if not credential:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Missing Google credential"
+            )
+        
+        # Verify the Google token
+        GOOGLE_CLIENT_ID = os.environ.get('GOOGLE_CLIENT_ID')
+        try:
+            idinfo = id_token.verify_oauth2_token(
+                credential,
+                google_requests.Request(),
+                GOOGLE_CLIENT_ID
+            )
+            
+            # Verify token issuer
+            if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+                raise ValueError('Wrong issuer.')
+            
+            # Extract user information from Google token
+            google_user_id = idinfo['sub']
+            email = idinfo['email']
+            name = idinfo.get('name', '')
+            picture = idinfo.get('picture', '')
+            email_verified = idinfo.get('email_verified', False)
+            
+            # Check if user exists by email
+            user_doc = await db.users.find_one({"email": email})
+            
+            if user_doc:
+                # User exists, update with Google info if needed
+                user = User(**user_doc)
+                updated = False
+                
+                if user.provider != 'google':
+                    user.provider = 'google'
+                    user.provider_id = google_user_id
+                    updated = True
+                
+                if picture and user.avatar != picture:
+                    user.avatar = picture
+                    updated = True
+                
+                if not user.is_verified and email_verified:
+                    user.is_verified = True
+                    updated = True
+                
+                if updated:
+                    user.updated_at = datetime.utcnow()
+                    await db.users.replace_one({"id": user.id}, user.dict())
+            else:
+                # Create new user from Google data
+                user = User(
+                    name=name,
+                    email=email,
+                    avatar=picture,
+                    provider='google',
+                    provider_id=google_user_id,
+                    is_verified=email_verified
+                )
+                await db.users.insert_one(user.dict())
+            
+            # Create JWT token
+            token = create_jwt_token(user.id, user.email)
+            
+            # Remove password hash from response
+            user_response = user.dict()
+            user_response.pop('password_hash', None)
+            
+            return AuthResponse(
+                user=User(**user_response),
+                token=token,
+                message="Google login successful"
+            )
+            
+        except ValueError as e:
+            # Invalid token
+            logger.error(f"Invalid Google token: {e}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Google token"
+            )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error with Google login: {e}")
+        raise HTTPException(status_code=500, detail="Internal server error")
+
 @api_router.get("/auth/verify")
 async def verify_token(current_user: User = Depends(get_current_user)):
     """Verify JWT token and return user info"""
