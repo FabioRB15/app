@@ -116,6 +116,61 @@ const Register = () => {
     });
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setIsSubmitting(true);
+      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/google`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          credential: credentialResponse.credential
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        toast({
+          title: "Cadastro realizado!",
+          description: `Bem-vindo, ${data.user.name}!`,
+        });
+        
+        // Reload to update auth context
+        window.location.href = '/';
+      } else {
+        toast({
+          title: "Erro no cadastro",
+          description: data.detail || "Falha ao fazer cadastro com Google.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Google registration error:', error);
+      toast({
+        title: "Erro no cadastro",
+        description: "Não foi possível fazer cadastro com Google.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    toast({
+      title: "Erro no cadastro",
+      description: "Falha ao fazer cadastro com Google.",
+      variant: "destructive"
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
