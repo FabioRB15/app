@@ -80,6 +80,61 @@ const Login = () => {
     });
   };
 
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setIsSubmitting(true);
+      
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/google`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          credential: credentialResponse.credential
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Store token and user data
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        
+        toast({
+          title: "Login realizado!",
+          description: `Bem-vindo, ${data.user.name}!`,
+        });
+        
+        // Reload to update auth context
+        window.location.href = '/';
+      } else {
+        toast({
+          title: "Erro no login",
+          description: data.detail || "Falha ao fazer login com Google.",
+          variant: "destructive"
+        });
+      }
+    } catch (error) {
+      console.error('Google login error:', error);
+      toast({
+        title: "Erro no login",
+        description: "Não foi possível fazer login com Google.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    toast({
+      title: "Erro no login",
+      description: "Falha ao fazer login com Google.",
+      variant: "destructive"
+    });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950">
