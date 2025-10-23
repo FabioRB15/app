@@ -69,85 +69,89 @@ function App() {
     }
   }, []);
 
+  const googleClientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+
   return (
     <HelmetProvider>
       <ErrorBoundary>
-        <ThemeProvider>
-          <AuthProvider>
-            <div className="App">
-              <BrowserRouter>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route 
-                    path="/jogos" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <Games />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/login" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <Login />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/register" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <Register />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/forgot-password" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <ForgotPassword />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/reset-password" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <ResetPassword />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/verify-email" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <VerifyEmail />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/dashboard/*" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <Dashboard />
-                      </Suspense>
-                    } 
-                  />
-                  <Route 
-                    path="/servers" 
-                    element={
-                      <Suspense fallback={<LoadingSpinner />}>
-                        <ServerManagement />
-                      </Suspense>
-                    } 
-                  />
-                </Routes>
-                <Toaster />
-              </BrowserRouter>
-            </div>
-          </AuthProvider>
-        </ThemeProvider>
+        <GoogleOAuthProvider clientId={googleClientId}>
+          <ThemeProvider>
+            <AuthProvider>
+              <div className="App">
+                <BrowserRouter>
+                  <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route 
+                      path="/jogos" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <Games />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/login" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <Login />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/register" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <Register />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/forgot-password" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ForgotPassword />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/reset-password" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ResetPassword />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/verify-email" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <VerifyEmail />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/dashboard/*" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <Dashboard />
+                        </Suspense>
+                      } 
+                    />
+                    <Route 
+                      path="/servers" 
+                      element={
+                        <Suspense fallback={<LoadingSpinner />}>
+                          <ServerManagement />
+                        </Suspense>
+                      } 
+                    />
+                  </Routes>
+                  <Toaster />
+                </BrowserRouter>
+              </div>
+            </AuthProvider>
+          </ThemeProvider>
+        </GoogleOAuthProvider>
       </ErrorBoundary>
     </HelmetProvider>
   );
