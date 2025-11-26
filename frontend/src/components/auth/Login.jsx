@@ -97,9 +97,9 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Store token and user data
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        // Store token and user data with correct keys
+        localStorage.setItem('mystic_token', data.token);
+        localStorage.setItem('mystic_user', JSON.stringify(data.user));
         
         toast({
           title: "Login realizado!",
