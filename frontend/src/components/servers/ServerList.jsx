@@ -1,66 +1,53 @@
 import React from 'react';
-import { Server, RefreshCw, Circle } from 'lucide-react';
+import { RefreshCw, Circle } from 'lucide-react';
 
 const ServerList = ({ servers, selectedServer, onSelectServer, onRefresh }) => {
   const getStatusColor = (running) => {
-    return running ? 'text-green-500' : 'text-red-500';
-  };
-
-  const getStatusText = (running) => {
-    return running ? 'Online' : 'Offline';
+    return running ? 'text-green-400' : 'text-gray-500';
   };
 
   return (
-    <div className="bg-gray-800 rounded-lg border border-gray-700">
-      <div className="p-4 border-b border-gray-700 flex items-center justify-between">
-        <h2 className="text-lg font-semibold text-white">Meus Servidores</h2>
+    <div className="h-full flex flex-col">
+      <div className="p-3 border-b border-gray-800 flex items-center justify-between bg-[#13161c]">
+        <h3 className="text-sm font-medium text-gray-300 uppercase tracking-wide">Instâncias</h3>
         <button
           onClick={onRefresh}
-          className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+          className="p-1.5 hover:bg-gray-800 rounded transition-colors"
           title="Atualizar"
         >
-          <RefreshCw className="h-4 w-4 text-gray-400" />
+          <RefreshCw className="h-3.5 w-3.5 text-gray-400" />
         </button>
       </div>
       
-      <div className="divide-y divide-gray-700">
+      <div className="flex-1 overflow-y-auto">
         {servers.length === 0 ? (
-          <div className="p-8 text-center">
-            <Server className="h-12 w-12 text-gray-600 mx-auto mb-3" />
-            <p className="text-gray-400">Nenhum servidor encontrado</p>
-            <p className="text-gray-500 text-sm mt-1">Crie seu primeiro servidor</p>
+          <div className="p-6 text-center">
+            <p className="text-gray-500 text-sm">Nenhuma instância encontrada</p>
           </div>
         ) : (
           servers.map((server) => (
             <button
               key={server.InstanceID}
               onClick={() => onSelectServer(server)}
-              className={`w-full p-4 text-left hover:bg-gray-700/50 transition-colors ${
+              className={`w-full p-3 text-left hover:bg-gray-800/50 transition-colors border-l-2 ${
                 selectedServer?.InstanceID === server.InstanceID
-                  ? 'bg-gray-700/70 border-l-4 border-purple-500'
-                  : ''
+                  ? 'bg-gray-800/70 border-blue-500'
+                  : 'border-transparent'
               }`}
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-white font-medium truncate">
-                    {server.FriendlyName || server.InstanceName}
-                  </h3>
-                  <p className="text-gray-400 text-sm mt-1">{server.Module}</p>
-                </div>
-                <div className="flex items-center gap-2 ml-3">
-                  <Circle
-                    className={`h-3 w-3 fill-current ${
-                      getStatusColor(server.Running)
-                    }`}
-                  />
-                  <span
-                    className={`text-sm ${
-                      getStatusColor(server.Running)
-                    }`}
-                  >
-                    {getStatusText(server.Running)}
-                  </span>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Circle
+                      className={`h-2 w-2 fill-current ${
+                        getStatusColor(server.Running)
+                      }`}
+                    />
+                    <h4 className="text-sm font-medium text-white truncate">
+                      {server.FriendlyName || server.InstanceName}
+                    </h4>
+                  </div>
+                  <p className="text-xs text-gray-500">{server.Module}</p>
                 </div>
               </div>
             </button>
