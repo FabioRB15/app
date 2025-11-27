@@ -10,8 +10,7 @@ const ServerConsole = ({ serverId }) => {
 
   useEffect(() => {
     fetchConsoleOutput();
-    // Auto-refresh every 5 seconds
-    const interval = setInterval(fetchConsoleOutput, 5000);
+    const interval = setInterval(fetchConsoleOutput, 3000);
     return () => clearInterval(interval);
   }, [serverId]);
 
@@ -25,7 +24,7 @@ const ServerConsole = ({ serverId }) => {
 
   const fetchConsoleOutput = async () => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('mystic_token');
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/amp/instances/${serverId}/console`,
         {
@@ -53,7 +52,7 @@ const ServerConsole = ({ serverId }) => {
 
     try {
       setLoading(true);
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('mystic_token');
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/amp/instances/${serverId}/console`,
         {
@@ -72,7 +71,6 @@ const ServerConsole = ({ serverId }) => {
           description: 'O comando foi enviado ao console'
         });
         setCommand('');
-        // Refresh console output after sending command
         setTimeout(fetchConsoleOutput, 1000);
       } else {
         throw new Error('Failed to send command');
@@ -92,41 +90,29 @@ const ServerConsole = ({ serverId }) => {
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return '';
     const date = new Date(timestamp);
-    return date.toLocaleTimeString('pt-BR');
+    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
   };
 
   return (
-    <div className="space-y-4">
-      {/* Console Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Terminal className="h-5 w-5 text-green-500" />
-          <h3 className="text-white font-semibold">Console do Servidor</h3>
-        </div>
-        <button
-          onClick={fetchConsoleOutput}
-          className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
-          title="Atualizar"
-        >
-          <RefreshCw className="h-4 w-4 text-gray-400" />
-        </button>
-      </div>
-
+    <div className="h-full flex flex-col">
       {/* Console Output */}
-      <div className="bg-black/50 rounded-lg border border-gray-700 p-4 h-96 overflow-y-auto font-mono text-sm">
+      <div className="flex-1 bg-black border border-gray-800 rounded font-mono text-sm overflow-y-auto p-3">
         {consoleOutput.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-500">
-            Nenhuma saída do console disponível
+          <div className="flex items-center justify-center h-full text-gray-600">
+            <div className="text-center">
+              <Terminal className="h-8 w-8 mx-auto mb-2" />
+              <p className="text-xs">Aguardando saída do console...</p>
+            </div>
           </div>
         ) : (
-          <div className="space-y-1">
+          <div className="space-y-0.5">
             {consoleOutput.map((entry, index) => (
-              <div key={index} className="text-gray-300">
-                <span className="text-gray-500 mr-2">
+              <div key={index} className="text-green-400">
+                <span className="text-gray-600 text-xs mr-2">
                   [{formatTimestamp(entry.Timestamp)}]
                 </span>
-                <span className="text-green-400">{entry.Source}:</span>
-                <span className="ml-2">{entry.Contents}</span>
+                <span className="text-yellow-500 text-xs">{entry.Source}:</span>
+                <span className="ml-2 text-xs">{entry.Contents}</span>
               </div>
             ))}
             <div ref={consoleEndRef} />
@@ -135,19 +121,22 @@ const ServerConsole = ({ serverId }) => {
       </div>
 
       {/* Command Input */}
-      <form onSubmit={sendCommand} className="flex gap-2">
-        <input
-          type="text"
-          value={command}
-          onChange={(e) => setCommand(e.target.value)}
-          placeholder="Digite um comando..."
-          className="flex-1 bg-gray-900 border border-gray-700 rounded-lg px-4 py-2 text-white placeholder-gray-500 focus:outline-none focus:border-purple-500"
-          disabled={loading}
-        />
+      <form onSubmit={sendCommand} className="flex gap-2 mt-3">
+        <div className="flex-1 relative">
+          <Terminal className="absolute left-3 top-2.5 h-4 w-4 text-gray-500" />
+          <input
+            type="text"
+            value={command}
+            onChange={(e) => setCommand(e.target.value)}
+            placeholder="Digite um comando..."
+            className="w-full bg-[#1a1d24] border border-gray-700 rounded px-10 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-blue-500 font-mono"
+            disabled={loading}
+          />
+        </div>
         <button
           type="submit"
           disabled={loading || !command.trim()}
-          className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-4 py-2 rounded-lg transition-colors"
+          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-700 disabled:cursor-not-allowed text-white px-4 py-2 rounded text-sm transition-colors"
         >
           <Send className="h-4 w-4" />
           Enviar
