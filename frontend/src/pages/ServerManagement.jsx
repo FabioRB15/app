@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import ServerList from '../components/servers/ServerList';
 import ServerDetails from '../components/servers/ServerDetails';
 import CreateServerModal from '../components/servers/CreateServerModal';
-import { Loader2, Plus, Server } from 'lucide-react';
+import { Loader2, Plus, Server, LayoutDashboard } from 'lucide-react';
 import { toast } from '../hooks/use-toast';
 
 const ServerManagement = () => {
@@ -29,7 +29,7 @@ const ServerManagement = () => {
     const fetchServers = async () => {
       try {
         setLoading(true);
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('mystic_token');
         
         const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/amp/instances`, {
           headers: {
@@ -44,6 +44,11 @@ const ServerManagement = () => {
 
         const data = await response.json();
         setServers(data.instances || []);
+        
+        // Auto-select first server
+        if (data.instances && data.instances.length > 0 && !selectedServer) {
+          setSelectedServer(data.instances[0]);
+        }
       } catch (error) {
         console.error('Error fetching servers:', error);
         toast({
@@ -67,7 +72,7 @@ const ServerManagement = () => {
 
   const handleServerAction = async (action, serverId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('mystic_token');
       const response = await fetch(
         `${process.env.REACT_APP_BACKEND_URL}/api/amp/instances/${serverId}/${action}`,
         {
@@ -84,12 +89,12 @@ const ServerManagement = () => {
       }
 
       toast({
-        title: 'Sucesso',
-        description: `Servidor ${action === 'start' ? 'iniciado' : action === 'stop' ? 'parado' : 'reiniciado'} com sucesso!`
+        title: 'Comando enviado',
+        description: `Servidor ${action === 'start' ? 'iniciando' : action === 'stop' ? 'parando' : 'reiniciando'}...`
       });
 
-      // Refresh servers list
-      setRefreshTrigger(prev => prev + 1);
+      // Refresh servers list after 2 seconds
+      setTimeout(() => setRefreshTrigger(prev => prev + 1), 2000);
     } catch (error) {
       console.error(`Error ${action} server:`, error);
       toast({
@@ -115,9 +120,9 @@ const ServerManagement = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
+      <div className="min-h-screen bg-[#1a1d24] flex items-center justify-center">
         <div className="text-center">
-          <Loader2 className="h-12 w-12 animate-spin text-purple-500 mx-auto mb-4" />
+          <Loader2 className="h-12 w-12 animate-spin text-blue-500 mx-auto mb-4" />
           <p className="text-gray-400">Carregando servidores...</p>
         </div>
       </div>
@@ -125,59 +130,94 @@ const ServerManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 pt-20 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#1a1d24] flex">
+      {/* Sidebar */}
+      <div className="w-64 bg-[#13161c] border-r border-gray-800 flex flex-col">
         {/* Header */}
-        <div className="mb-8">
+        <div className="p-4 border-b border-gray-800">
+          <div className="flex items-center gap-2 mb-4">
+            <LayoutDashboard className="h-5 w-5 text-blue-400" />
+            <h1 className="text-white font-semibold">AMP Manager</h1>
+          </div>
+          <button
+            onClick={handleCreateServer}
+            className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded text-sm transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            Criar Servidor
+          </button>
+        </div>
+
+        {/* Server List */}
+        <div className="flex-1 overflow-y-auto">
+          <ServerList
+            servers={servers}
+            selectedServer={selectedServer}
+            onSelectServer={handleServerSelect}
+            onRefresh={() => setRefreshTrigger(prev => prev + 1)}
+          />
+        </div>
+
+        {/* User Info */}
+        <div className="p-4 border-t border-gray-800">
+          <div className="flex items-center gap-3">
+            {user?.avatar ? (
+              <img src={user.avatar} alt={user.name} className="w-8 h-8 rounded-full" />
+            ) : (
+              <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                <span className="text-gray-300 text-sm">{user?.name?.charAt(0)}</span>
+              </div>
+            )}
+            <div className="flex-1 min-w-0">
+              <p className="text-sm text-white truncate">{user?.name}</p>
+              <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top Bar */}
+        <div className="bg-[#13161c] border-b border-gray-800 px-6 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-                <Server className="h-8 w-8 text-purple-500" />
-                Gerenciamento de Servidores
-              </h1>
-              <p className="text-gray-400 mt-2">
-                Gerencie seus servidores de jogos
+              <h2 className="text-xl font-semibold text-white">
+                {selectedServer ? selectedServer.FriendlyName || selectedServer.InstanceName : 'Nenhum servidor selecionado'}
+              </h2>
+              <p className="text-sm text-gray-400 mt-1">
+                {selectedServer ? `${selectedServer.Module} • ${selectedServer.InstanceID}` : 'Selecione um servidor na lista'}
               </p>
             </div>
-            <button
-              onClick={handleCreateServer}
-              className="flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg transition-colors"
-            >
-              <Plus className="h-5 w-5" />
-              Criar Servidor
-            </button>
+            <div className="flex items-center gap-2">
+              <div className={`px-3 py-1 rounded text-xs font-medium ${
+                selectedServer?.Running 
+                  ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                  : 'bg-gray-700/50 text-gray-400 border border-gray-600'
+              }`}>
+                {selectedServer?.Running ? 'ONLINE' : 'OFFLINE'}
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Server List */}
-          <div className="lg:col-span-1">
-            <ServerList
-              servers={servers}
-              selectedServer={selectedServer}
-              onSelectServer={handleServerSelect}
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {selectedServer ? (
+            <ServerDetails
+              server={selectedServer}
+              onAction={handleServerAction}
               onRefresh={() => setRefreshTrigger(prev => prev + 1)}
             />
-          </div>
-
-          {/* Server Details */}
-          <div className="lg:col-span-2">
-            {selectedServer ? (
-              <ServerDetails
-                server={selectedServer}
-                onAction={handleServerAction}
-                onRefresh={() => setRefreshTrigger(prev => prev + 1)}
-              />
-            ) : (
-              <div className="bg-gray-800 rounded-lg border border-gray-700 p-12 text-center">
+          ) : (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center">
                 <Server className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-                <p className="text-gray-400 text-lg">
-                  Selecione um servidor para ver os detalhes
-                </p>
+                <p className="text-gray-400 text-lg mb-2">Nenhum servidor selecionado</p>
+                <p className="text-gray-500 text-sm">Selecione um servidor na barra lateral</p>
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </div>
 
