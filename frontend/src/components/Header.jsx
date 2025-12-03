@@ -110,7 +110,7 @@ const Header = () => {
                       <DropdownMenuSeparator />
                     </>
                   )}
-                  <DropdownMenuItem onClick={() => navigate('/servers')}>
+                  <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                     <User className="w-4 h-4 mr-2" />
                     Minha Conta
                   </DropdownMenuItem>
