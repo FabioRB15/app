@@ -156,9 +156,28 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200/50 dark:border-gray-700/50">
             <nav className="flex flex-col space-y-4">
-              <a href="#dashboard" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
-                Dashboard
-              </a>
+              {isAuthenticated ? (
+                <Link 
+                  to="/servers" 
+                  className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Dashboard
+                </Link>
+              ) : (
+                <a href="#dashboard" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
+                  Dashboard
+                </a>
+              )}
+              {isAuthenticated && (
+                <Link 
+                  to="/servers" 
+                  className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Servidores
+                </Link>
+              )}
               <a href="#pricing" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
                 Planos
               </a>
