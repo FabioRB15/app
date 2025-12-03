@@ -58,9 +58,15 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#dashboard" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
-              Dashboard
-            </a>
+            {isAuthenticated ? (
+              <Link to="/servers" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
+                Dashboard
+              </Link>
+            ) : (
+              <a href="#dashboard" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
+                Dashboard
+              </a>
+            )}
             {isAuthenticated && (
               <Link to="/servers" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
                 Servidores
