@@ -3,12 +3,12 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { useAuth } from '../../contexts/AuthContext';
-import { 
-  Home, 
-  User, 
-  Server, 
-  Settings, 
-  LogOut, 
+import {
+  Home,
+  User,
+  Server,
+  Settings,
+  LogOut,
   X,
   AlertCircle,
   Mail,
@@ -64,18 +64,23 @@ const DashboardSidebar = ({ isOpen, onToggle, user }) => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center space-x-3">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-              alt="Mystic Host" 
-              className="w-8 h-8"
+            <img
+              src="/logo-dark-mode.png"
+              alt="Mystic Host"
+              className="w-8 h-8 hidden dark:block"
+            />
+            <img
+              src="/logo-light-mode.png"
+              alt="Mystic Host"
+              className="w-8 h-8 block dark:hidden"
             />
             <span className="text-lg font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Mystic Host
             </span>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             className="lg:hidden"
             onClick={onToggle}
           >
@@ -98,7 +103,7 @@ const DashboardSidebar = ({ isOpen, onToggle, user }) => {
               </p>
             </div>
           </div>
-          
+
           {/* Verification Status */}
           <div className="mt-3">
             {user?.is_verified ? (
@@ -143,21 +148,21 @@ const DashboardSidebar = ({ isOpen, onToggle, user }) => {
             <p className="px-3 text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">
               Ações Rápidas
             </p>
-            
+
             {!user?.is_verified && (
-              <Button 
-                variant="outline" 
-                size="sm" 
+              <Button
+                variant="outline"
+                size="sm"
                 className="w-full justify-start mb-2"
               >
                 <Mail className="w-4 h-4 mr-2" />
                 Verificar Email
               </Button>
             )}
-            
-            <Button 
-              variant="outline" 
-              size="sm" 
+
+            <Button
+              variant="outline"
+              size="sm"
               className="w-full justify-start"
               onClick={() => navigate('/')}
             >
@@ -169,8 +174,8 @@ const DashboardSidebar = ({ isOpen, onToggle, user }) => {
 
         {/* Footer */}
         <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-          <Button 
-            variant="ghost" 
+          <Button
+            variant="ghost"
             className="w-full justify-start text-gray-700 dark:text-gray-300 hover:text-red-600 dark:hover:text-red-400"
             onClick={handleLogout}
           >

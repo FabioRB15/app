@@ -22,7 +22,7 @@ const Header = () => {
 
   const handleResendVerification = async () => {
     if (!user?.email) return;
-    
+
     try {
       await apiService.resendVerificationEmail({ email: user.email });
       toast({
@@ -45,10 +45,15 @@ const Header = () => {
           {/* Logo with Mystic Symbol */}
           <Link to="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
             <div className="relative">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-                alt="Mystic Host Symbol" 
-                className="w-8 h-8 opacity-90 hover:opacity-100 transition-opacity"
+              <img
+                src="/logo-dark-mode.png"
+                alt="Mystic Host"
+                className="w-8 h-8 opacity-90 hover:opacity-100 transition-opacity hidden dark:block"
+              />
+              <img
+                src="/logo-light-mode.png"
+                alt="Mystic Host"
+                className="w-8 h-8 opacity-90 hover:opacity-100 transition-opacity block dark:hidden"
               />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
@@ -122,14 +127,14 @@ const Header = () => {
               </DropdownMenu>
             ) : (
               <>
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400"
                   onClick={() => navigate('/login')}
                 >
                   Entrar
                 </Button>
-                <Button 
+                <Button
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 transition-all shadow-lg shadow-purple-500/25"
                   onClick={() => navigate('/register')}
                 >
@@ -157,16 +162,16 @@ const Header = () => {
           <div className="md:hidden py-4 border-t border-gray-200/50 dark:border-gray-700/50">
             <nav className="flex flex-col space-y-4">
               {isAuthenticated ? (
-                <Link 
-                  to="/servers" 
+                <Link
+                  to="/servers"
                   className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   Dashboard
                 </Link>
               ) : (
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -174,8 +179,8 @@ const Header = () => {
                 </Link>
               )}
               {isAuthenticated && (
-                <Link 
-                  to="/servers" 
+                <Link
+                  to="/servers"
                   className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -185,8 +190,8 @@ const Header = () => {
               <a href="#pricing" className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium">
                 Planos
               </a>
-              <Link 
-                to="/jogos" 
+              <Link
+                to="/jogos"
                 className="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors font-medium"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -202,8 +207,8 @@ const Header = () => {
                       <User className="w-4 h-4 mr-2" />
                       {user?.name}
                     </Button>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       className="justify-start text-gray-700 dark:text-gray-300"
                       onClick={handleLogout}
                     >
@@ -213,14 +218,14 @@ const Header = () => {
                   </>
                 ) : (
                   <>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       className="justify-start text-gray-700 dark:text-gray-300"
                       onClick={() => navigate('/login')}
                     >
                       Entrar
                     </Button>
-                    <Button 
+                    <Button
                       className="bg-gradient-to-r from-purple-600 to-indigo-600 justify-start shadow-lg shadow-purple-500/25"
                       onClick={() => navigate('/register')}
                     >

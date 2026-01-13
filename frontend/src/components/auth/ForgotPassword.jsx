@@ -17,7 +17,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email) {
       toast({
         title: "Email obrigatório",
@@ -28,10 +28,10 @@ const ForgotPassword = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       await apiService.forgotPassword({ email });
-      
+
       setEmailSent(true);
       toast({
         title: "Email enviado!",
@@ -44,7 +44,7 @@ const ForgotPassword = () => {
         variant: "destructive"
       });
     }
-    
+
     setIsSubmitting(false);
   };
 
@@ -62,10 +62,15 @@ const ForgotPassword = () => {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center space-x-3 mb-4">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-                alt="Mystic Host" 
-                className="w-12 h-12"
+              <img
+                src="/logo-dark-mode.png"
+                alt="Mystic Host"
+                className="w-12 h-12 hidden dark:block"
+              />
+              <img
+                src="/logo-light-mode.png"
+                alt="Mystic Host"
+                className="w-12 h-12 block dark:hidden"
               />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Mystic Host
@@ -82,16 +87,16 @@ const ForgotPassword = () => {
                 Verifique sua caixa de entrada
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="space-y-6 text-center">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
                 <Mail className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400">
                 Se o email <strong>{email}</strong> estiver cadastrado, você receberá instruções para redefinir sua senha.
               </p>
-              
+
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Não recebeu o email? Verifique sua pasta de spam ou tente novamente em alguns minutos.
               </p>
@@ -104,7 +109,7 @@ const ForgotPassword = () => {
                 >
                   Tentar outro email
                 </Button>
-                
+
                 <Link to="/login">
                   <Button variant="ghost" className="w-full">
                     <ArrowLeft className="w-4 h-4 mr-2" />
@@ -132,10 +137,15 @@ const ForgotPassword = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-3 mb-4">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-              alt="Mystic Host" 
-              className="w-12 h-12"
+            <img
+              src="/logo-dark-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 hidden dark:block"
+            />
+            <img
+              src="/logo-light-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 block dark:hidden"
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Mystic Host
@@ -155,7 +165,7 @@ const ForgotPassword = () => {
               Digite seu email para receber instruções de recuperação
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -191,8 +201,8 @@ const ForgotPassword = () => {
             </form>
 
             <div className="text-center">
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="text-sm text-purple-600 dark:text-purple-400 hover:underline inline-flex items-center"
               >
                 <ArrowLeft className="w-4 h-4 mr-1" />

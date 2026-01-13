@@ -11,7 +11,7 @@ const VerifyEmail = () => {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  
+
   const [verificationState, setVerificationState] = useState('loading'); // 'loading', 'success', 'error'
   const [message, setMessage] = useState('');
 
@@ -28,10 +28,10 @@ const VerifyEmail = () => {
     try {
       setVerificationState('loading');
       const response = await apiService.verifyEmail(token);
-      
+
       setVerificationState('success');
       setMessage(response.message || 'Email verificado com sucesso!');
-      
+
       toast({
         title: "Email verificado!",
         description: "Sua conta foi verificada com sucesso.",
@@ -39,7 +39,7 @@ const VerifyEmail = () => {
     } catch (error) {
       setVerificationState('error');
       setMessage(error.response?.data?.detail || 'Token inválido ou expirado');
-      
+
       toast({
         title: "Erro na verificação",
         description: "Não foi possível verificar seu email.",
@@ -69,7 +69,7 @@ const VerifyEmail = () => {
                 Aguarde enquanto verificamos seu email...
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="space-y-6 text-center">
               <LoadingSpinner size="large" />
               <p className="text-gray-600 dark:text-gray-400">
@@ -90,16 +90,16 @@ const VerifyEmail = () => {
                 Sua conta foi ativada com sucesso
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="space-y-6 text-center">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400">
                 {message}
               </p>
-              
+
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 Agora você pode fazer login e acessar todos os recursos da plataforma.
               </p>
@@ -124,16 +124,16 @@ const VerifyEmail = () => {
                 Não foi possível verificar seu email
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="space-y-6 text-center">
               <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mx-auto">
                 <XCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400">
                 {message}
               </p>
-              
+
               <p className="text-sm text-gray-500 dark:text-gray-400">
                 O link pode ter expirado ou já ter sido usado. Você pode solicitar um novo email de verificação.
               </p>
@@ -147,7 +147,7 @@ const VerifyEmail = () => {
                   <Mail className="w-4 h-4 mr-2" />
                   Reenviar Verificação
                 </Button>
-                
+
                 <Link to="/login">
                   <Button variant="ghost" className="w-full">
                     Fazer Login
@@ -176,10 +176,15 @@ const VerifyEmail = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-3 mb-4">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-              alt="Mystic Host" 
-              className="w-12 h-12"
+            <img
+              src="/logo-dark-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 hidden dark:block"
+            />
+            <img
+              src="/logo-light-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 block dark:hidden"
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Mystic Host

@@ -16,7 +16,7 @@ const Register = () => {
   const navigate = useNavigate();
   const { register, socialLogin, isLoading } = useAuth();
   const { toast } = useToast();
-  
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -38,7 +38,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       toast({
         title: "Campos obrigatórios",
@@ -76,14 +76,14 @@ const Register = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const result = await register({
         name: formData.name,
         email: formData.email,
         password: formData.password
       });
-      
+
       if (result.success) {
         toast({
           title: "Conta criada!",
@@ -104,7 +104,7 @@ const Register = () => {
         variant: "destructive"
       });
     }
-    
+
     setIsSubmitting(false);
   };
 
@@ -119,7 +119,7 @@ const Register = () => {
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setIsSubmitting(true);
-      
+
       const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/google`, {
         method: 'POST',
         headers: {
@@ -136,12 +136,12 @@ const Register = () => {
         // Store token and user data with correct keys
         localStorage.setItem('mystic_token', data.token);
         localStorage.setItem('mystic_user', JSON.stringify(data.user));
-        
+
         toast({
           title: "Cadastro realizado!",
           description: `Bem-vindo, ${data.user.name}!`,
         });
-        
+
         // Reload to update auth context
         window.location.href = '/';
       } else {
@@ -192,10 +192,15 @@ const Register = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-3 mb-4">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-              alt="Mystic Host" 
-              className="w-12 h-12"
+            <img
+              src="/logo-dark-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 hidden dark:block"
+            />
+            <img
+              src="/logo-light-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 block dark:hidden"
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Mystic Host
@@ -215,7 +220,7 @@ const Register = () => {
               Junte-se à comunidade mística de gamers
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             {/* Google Signup Button */}
             <div className="space-y-3">
@@ -238,7 +243,7 @@ const Register = () => {
                 disabled={isSubmitting}
               >
                 <svg className="w-5 h-5 mr-2" fill="#1877F2" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
                 Continuar com Facebook
               </Button>
@@ -388,8 +393,8 @@ const Register = () => {
             <div className="text-center">
               <p className="text-sm text-gray-600 dark:text-gray-400">
                 Já tem uma conta?{' '}
-                <Link 
-                  to="/login" 
+                <Link
+                  to="/login"
                   className="text-purple-600 dark:text-purple-400 hover:underline font-medium"
                 >
                   Entre aqui

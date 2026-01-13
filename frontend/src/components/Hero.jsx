@@ -11,7 +11,7 @@ const Hero = () => {
         <div className="absolute top-40 right-20 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl animate-pulse delay-1000"></div>
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-purple-600/5 rounded-full blur-xl animate-pulse delay-2000"></div>
       </div>
-      
+
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center">
           {/* Badge */}
@@ -26,10 +26,15 @@ const Hero = () => {
               <div className="w-48 h-48 sm:w-56 sm:h-56 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 rounded-full blur-3xl animate-pulse"></div>
             </div>
             <div className="relative">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-                alt="Mystic Host Symbol" 
-                className="w-36 h-36 sm:w-44 sm:h-44 mx-auto opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105 drop-shadow-2xl"
+              <img
+                src="/logo-dark-mode.png"
+                alt="Mystic Host Symbol"
+                className="w-36 h-36 sm:w-44 sm:h-44 mx-auto opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105 drop-shadow-2xl hidden dark:block"
+              />
+              <img
+                src="/logo-light-mode.png"
+                alt="Mystic Host Symbol"
+                className="w-36 h-36 sm:w-44 sm:h-44 mx-auto opacity-95 hover:opacity-100 transition-all duration-500 hover:scale-105 drop-shadow-2xl block dark:hidden"
               />
               {/* Subtle glow effect */}
               <div className="absolute inset-0 w-36 h-36 sm:w-44 sm:h-44 mx-auto bg-gradient-to-r from-purple-600/20 to-indigo-600/20 rounded-full blur-xl -z-10"></div>
@@ -46,7 +51,7 @@ const Hero = () => {
 
           {/* Subtitle */}
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed transition-colors">
-            Hospedagem premium para gamers que buscam performance excepcional, 
+            Hospedagem premium para gamers que buscam performance excepcional,
             estabilidade mística e uma experiência que transcende o comum.
           </p>
 

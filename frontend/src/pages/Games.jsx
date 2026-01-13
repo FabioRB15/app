@@ -17,11 +17,11 @@ const supportedGames = [
   {
     id: 1,
     name: "Minecraft Java Edition",
-    category: "Sandbox", 
+    category: "Sandbox",
     type: "dedicated",
     players: "Ilimitado",
     description: "O clássico jogo de construção em blocos com suporte completo a plugins e mods.",
-    image: "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=🧱+Minecraft",
+    image: "https://image.api.playstation.com/vulcan/img/rnd/202010/2217/LsaRvLF262saMfevmiNqSuLL.jpg",
     features: ["Plugins", "Mods", "Whitelist", "Backups automáticos"],
     popular: true,
     official: true
@@ -30,10 +30,10 @@ const supportedGames = [
     id: 2,
     name: "Rust",
     category: "Survival",
-    type: "dedicated", 
+    type: "dedicated",
     players: "200+",
     description: "Survival multiplayer com foco em PvP e construção de bases.",
-    image: "https://via.placeholder.com/400x300/8B4513/FFFFFF?text=🔥+Rust+Survival",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/252490/header.jpg",
     features: ["Óxido plugins", "Blueprints", "Kits", "Economia"],
     popular: true,
     official: true
@@ -45,7 +45,7 @@ const supportedGames = [
     type: "generic",
     players: "10",
     description: "Aventura co-op inspirada na cultura viking e mitologia nórdica.",
-    image: "https://via.placeholder.com/400x300/4B5563/FFFFFF?text=⚔️+Valheim+Viking",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/892970/header.jpg",
     features: ["Co-op", "Boss battles", "Construção", "Exploração"],
     popular: true,
     official: true
@@ -57,7 +57,7 @@ const supportedGames = [
     type: "generic",
     players: "64",
     description: "FPS competitivo com modo clássico de bombas e reféns.",
-    image: "https://via.placeholder.com/400x300/DC2626/FFFFFF?text=🔫+Counter-Strike+2",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/730/header.jpg",
     features: ["Mapas customizados", "Mods", "Torneios", "Ranking"],
     popular: true,
     official: true
@@ -69,7 +69,7 @@ const supportedGames = [
     type: "generic",
     players: "150+",
     description: "Survival com dinossauros e criaturas em mundo aberto.",
-    image: "https://via.placeholder.com/400x300/059669/FFFFFF?text=🦖+ARK+Dinosaurs",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/346110/header.jpg",
     features: ["Dinossauros", "Construção", "Tribes", "Mods"],
     popular: true,
     official: true
@@ -81,7 +81,7 @@ const supportedGames = [
     type: "generic",
     players: "255",
     description: "Aventura 2D com exploração, construção e combate.",
-    image: "https://via.placeholder.com/400x300/10B981/FFFFFF?text=⛏️+Terraria+2D",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/105600/header.jpg",
     features: ["Mods tModLoader", "Eventos", "Bosses", "Multiplayer"],
     popular: false,
     official: true
@@ -93,7 +93,7 @@ const supportedGames = [
     type: "generic",
     players: "128",
     description: "Sandbox criativo com física e possibilidades infinitas.",
-    image: "https://via.placeholder.com/400x300/F59E0B/FFFFFF?text=🔧+Garry's+Mod",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/4000/header.jpg",
     features: ["Addons", "Gamemodes", "Workshop", "Lua scripting"],
     popular: false,
     official: true
@@ -105,7 +105,7 @@ const supportedGames = [
     type: "generic",
     players: "16",
     description: "Survival horror com zumbis em mundo voxel.",
-    image: "https://via.placeholder.com/400x300/7C3AED/FFFFFF?text=🧟+7+Days+Zombie",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/251570/header.jpg",
     features: ["Crafting", "Horde nights", "Mods", "Building"],
     popular: false,
     official: true
@@ -114,10 +114,10 @@ const supportedGames = [
     id: 9,
     name: "Project Zomboid",
     category: "Survival",
-    type: "generic", 
+    type: "generic",
     players: "32+",
     description: "Survival isométrico em apocalipse zumbi.",
-    image: "https://via.placeholder.com/400x300/DC2626/FFFFFF?text=🩸+Project+Zomboid",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/108600/header.jpg",
     features: ["Survival realista", "Crafting", "Mods", "Multiplayer"],
     popular: false,
     official: true
@@ -129,7 +129,7 @@ const supportedGames = [
     type: "generic",
     players: "65000+",
     description: "Construa e automatize fábricas em alien planet.",
-    image: "https://via.placeholder.com/400x300/0891B2/FFFFFF?text=⚙️+Factorio+Factory",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/427520/header.jpg",
     features: ["Automação", "Mods", "Multiplayer", "Logística"],
     popular: false,
     official: true
@@ -141,7 +141,7 @@ const supportedGames = [
     type: "generic",
     players: "4",
     description: "Jogo de construção de fábrica em primeira pessoa 3D.",
-    image: "https://via.placeholder.com/400x300/059669/FFFFFF?text=🏭+Satisfactory+3D",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/526870/header.jpg",
     features: ["Co-op", "Construção 3D", "Automação", "Exploração"],
     popular: false,
     official: true
@@ -153,7 +153,7 @@ const supportedGames = [
     type: "generic",
     players: "16",
     description: "Construção e engenharia no espaço com física realista.",
-    image: "https://via.placeholder.com/400x300/1E40AF/FFFFFF?text=🚀+Space+Engineers",
+    image: "https://cdn.cloudflare.steamstatic.com/steam/apps/244850/header.jpg",
     features: ["Física real", "Construção", "Mods", "Scripting"],
     popular: false,
     official: true
@@ -170,10 +170,10 @@ const Games = () => {
   const filteredGames = useMemo(() => {
     return supportedGames.filter(game => {
       const matchesSearch = game.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           game.description.toLowerCase().includes(searchTerm.toLowerCase());
+        game.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = selectedCategory === 'Todos' || game.category === selectedCategory;
       const matchesPopular = !showOnlyPopular || game.popular;
-      
+
       return matchesSearch && matchesCategory && matchesPopular;
     });
   }, [searchTerm, selectedCategory, showOnlyPopular]);
@@ -184,7 +184,7 @@ const Games = () => {
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <PricingPageSEO />
       <Header />
-      
+
       {/* Hero Section */}
       <section className="pt-24 pb-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -195,10 +195,10 @@ const Games = () => {
             </h1>
           </div>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto">
-            Descubra todos os jogos que você pode hospedar com o nosso Painel AMP. 
+            Descubra todos os jogos que você pode hospedar com o nosso Painel AMP.
             Mais de 12 jogos populares com configuração automática e suporte completo.
           </p>
-          
+
           {/* Stats */}
           <div className="flex flex-wrap justify-center gap-8 mb-12">
             <div className="text-center">
@@ -233,7 +233,7 @@ const Games = () => {
                   className="pl-10"
                 />
               </div>
-              
+
               {/* Category Filter */}
               <div className="flex gap-2 flex-wrap">
                 {categories.map(category => (
@@ -247,7 +247,7 @@ const Games = () => {
                   </Button>
                 ))}
               </div>
-              
+
               {/* Popular Filter */}
               <Button
                 variant={showOnlyPopular ? "default" : "outline"}
@@ -283,17 +283,16 @@ const Games = () => {
                       Popular
                     </Badge>
                   )}
-                  <Badge 
-                    className={`absolute top-2 right-2 ${
-                      game.type === 'dedicated' 
-                        ? 'bg-green-600' 
+                  <Badge
+                    className={`absolute top-2 right-2 ${game.type === 'dedicated'
+                        ? 'bg-green-600'
                         : 'bg-blue-600'
-                    }`}
+                      }`}
                   >
                     {game.type === 'dedicated' ? 'Dedicado' : 'Genérico'}
                   </Badge>
                 </div>
-                
+
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     {game.name}
@@ -301,7 +300,7 @@ const Games = () => {
                   </CardTitle>
                   <CardDescription>{game.description}</CardDescription>
                 </CardHeader>
-                
+
                 <CardContent>
                   <div className="space-y-4">
                     {/* Players */}
@@ -309,7 +308,7 @@ const Games = () => {
                       <Users className="h-4 w-4 mr-2" />
                       Até {game.players} jogadores
                     </div>
-                    
+
                     {/* Features */}
                     <div>
                       <h4 className="text-sm font-medium mb-2">Recursos:</h4>
@@ -326,7 +325,7 @@ const Games = () => {
                         )}
                       </div>
                     </div>
-                    
+
                     {/* CTA */}
                     <Button className="w-full" size="sm">
                       <Server className="h-4 w-4 mr-2" />
@@ -337,7 +336,7 @@ const Games = () => {
               </Card>
             ))}
           </div>
-          
+
           {filteredGames.length === 0 && (
             <div className="text-center py-16">
               <Gamepad2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
@@ -359,7 +358,7 @@ const Games = () => {
             Não encontrou seu jogo favorito?
           </h2>
           <p className="text-xl text-blue-100 mb-8">
-            O Painel AMP suporta praticamente qualquer jogo através do módulo genérico. 
+            O Painel AMP suporta praticamente qualquer jogo através do módulo genérico.
             Entre em contato conosco para configuração personalizada.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -14,7 +14,7 @@ const ResetPassword = () => {
   const { toast } = useToast();
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  
+
   const [formData, setFormData] = useState({
     password: '',
     confirmPassword: ''
@@ -45,7 +45,7 @@ const ResetPassword = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.password || !formData.confirmPassword) {
       toast({
         title: "Campos obrigatórios",
@@ -74,13 +74,13 @@ const ResetPassword = () => {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       await apiService.resetPassword({
         token: token,
         new_password: formData.password
       });
-      
+
       setResetSuccess(true);
       toast({
         title: "Senha redefinida!",
@@ -93,7 +93,7 @@ const ResetPassword = () => {
         variant: "destructive"
       });
     }
-    
+
     setIsSubmitting(false);
   };
 
@@ -111,10 +111,15 @@ const ResetPassword = () => {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center space-x-3 mb-4">
-              <img 
-                src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-                alt="Mystic Host" 
-                className="w-12 h-12"
+              <img
+                src="/logo-dark-mode.png"
+                alt="Mystic Host"
+                className="w-12 h-12 hidden dark:block"
+              />
+              <img
+                src="/logo-light-mode.png"
+                alt="Mystic Host"
+                className="w-12 h-12 block dark:hidden"
               />
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
                 Mystic Host
@@ -131,12 +136,12 @@ const ResetPassword = () => {
                 Sua senha foi alterada com sucesso
               </CardDescription>
             </CardHeader>
-            
+
             <CardContent className="space-y-6 text-center">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
                 <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
               </div>
-              
+
               <p className="text-gray-600 dark:text-gray-400">
                 Agora você pode fazer login com sua nova senha.
               </p>
@@ -170,10 +175,15 @@ const ResetPassword = () => {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-3 mb-4">
-            <img 
-              src="https://customer-assets.emergentagent.com/job_mystic-host/artifacts/dapkmkez_ChatGPT%20Image%203%20de%20set.%20de%202025%2C%2008_32_26.png" 
-              alt="Mystic Host" 
-              className="w-12 h-12"
+            <img
+              src="/logo-dark-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 hidden dark:block"
+            />
+            <img
+              src="/logo-light-mode.png"
+              alt="Mystic Host"
+              className="w-12 h-12 block dark:hidden"
             />
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
               Mystic Host
@@ -193,7 +203,7 @@ const ResetPassword = () => {
               Digite sua nova senha abaixo
             </CardDescription>
           </CardHeader>
-          
+
           <CardContent className="space-y-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -273,8 +283,8 @@ const ResetPassword = () => {
             </form>
 
             <div className="text-center">
-              <Link 
-                to="/login" 
+              <Link
+                to="/login"
                 className="text-sm text-purple-600 dark:text-purple-400 hover:underline"
               >
                 Lembrou da senha? Fazer login
