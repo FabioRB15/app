@@ -8,7 +8,10 @@ import ErrorMessage from './ErrorMessage';
 import MysticBackground from './MysticBackground';
 import { TrendingUp, TrendingDown, Play, Settings, Users, HardDrive } from 'lucide-react';
 
+import { useNavigate } from 'react-router-dom';
+
 const DashboardPreview = () => {
+  const navigate = useNavigate();
   const [dashboardStats, setDashboardStats] = useState([]);
   const [gameServers, setGameServers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,13 +21,13 @@ const DashboardPreview = () => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Fetch both stats and servers in parallel
       const [stats, servers] = await Promise.all([
         apiService.getDashboardStats(),
         apiService.getServers()
       ]);
-      
+
       setDashboardStats(stats);
       setGameServers(servers);
     } catch (err) {
@@ -106,9 +109,8 @@ const DashboardPreview = () => {
                   <div className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">
                     {stat.value}
                   </div>
-                  <div className={`flex items-center text-sm font-medium ${
-                    stat.trend === 'up' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'
-                  } transition-colors`}>
+                  <div className={`flex items-center text-sm font-medium ${stat.trend === 'up' ? 'text-green-600 dark:text-green-400' : 'text-blue-600 dark:text-blue-400'
+                    } transition-colors`}>
                     {stat.trend === 'up' ? (
                       <TrendingUp className="w-4 h-4 mr-1" />
                     ) : (
@@ -138,8 +140,8 @@ const DashboardPreview = () => {
               {gameServers.slice(0, 4).map((server) => (
                 <div key={server.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors">
                   <div className="flex items-center space-x-4">
-                    <img 
-                      src={server.image} 
+                    <img
+                      src={server.image}
                       alt={server.name}
                       className="w-12 h-12 rounded-lg object-cover"
                     />
@@ -149,13 +151,18 @@ const DashboardPreview = () => {
                     </div>
                   </div>
                   <div className="flex items-center space-x-3">
-                    <Badge 
+                    <Badge
                       variant={server.status === 'online' ? 'default' : 'secondary'}
                       className={server.status === 'online' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'}
                     >
                       {server.status === 'online' ? 'Online' : 'Manutenção'}
                     </Badge>
-                    <Button size="sm" variant="ghost" className="dark:hover:bg-gray-600">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="dark:hover:bg-gray-600"
+                      onClick={() => navigate('/dashboard/servers')}
+                    >
                       <Settings className="w-4 h-4" />
                     </Button>
                   </div>
@@ -179,7 +186,7 @@ const DashboardPreview = () => {
                 <Play className="w-4 h-4 mr-3" />
                 Criar Novo Servidor
               </Button>
-              
+
               <div className="grid grid-cols-2 gap-3">
                 <Button variant="outline" className="justify-start border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
                   <Users className="w-4 h-4 mr-2" />
@@ -194,14 +201,14 @@ const DashboardPreview = () => {
               {/* Resource Usage */}
               <div className="space-y-3 pt-4 border-t border-gray-200 dark:border-gray-700">
                 <h5 className="font-medium text-gray-900 dark:text-white transition-colors">Uso de Recursos</h5>
-                
+
                 <div className="space-y-2">
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-600 dark:text-gray-400 transition-colors">CPU</span>
                     <span className="font-medium text-gray-900 dark:text-white transition-colors">34%</span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full" style={{width: '34%'}}></div>
+                    <div className="bg-gradient-to-r from-purple-500 to-indigo-500 h-2 rounded-full" style={{ width: '34%' }}></div>
                   </div>
                 </div>
 
@@ -211,7 +218,7 @@ const DashboardPreview = () => {
                     <span className="font-medium text-gray-900 dark:text-white transition-colors">67%</span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style={{width: '67%'}}></div>
+                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style={{ width: '67%' }}></div>
                   </div>
                 </div>
 
@@ -221,7 +228,7 @@ const DashboardPreview = () => {
                     <span className="font-medium text-gray-900 dark:text-white transition-colors">23%</span>
                   </div>
                   <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-                    <div className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style={{width: '23%'}}></div>
+                    <div className="bg-gradient-to-r from-green-500 to-blue-500 h-2 rounded-full" style={{ width: '23%' }}></div>
                   </div>
                 </div>
               </div>

@@ -30,7 +30,7 @@ class Database:
                     "ram": "2GB",
                     "storage": "10GB SSD",
                     "status": "online",
-                    "image": "https://image.api.playstation.com/vulcan/img/rnd/202010/2217/LsaRvLF262saMfevmiNqSuLL.jpg",
+                    "image": "https://assets.nintendo.com/image/upload/ar_16:9,c_lpad,w_600/v1/ncom/en_US/games/switch/m/minecraft-switch/hero",
                     "created_at": datetime.utcnow(),
                     "updated_at": datetime.utcnow()
                 },
